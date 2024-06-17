@@ -14,15 +14,16 @@
     // "experimentalDecorators": true,
     // "strictPropertyInitialization": false,
     "paths": {
-      "@utils/*": ["src/utils/*"],
       "@server/*": ["src/server/*"],
       "@data": ["src/data/index.ts"],
       "@modules/*": ["src/modules/*"],
-      "@itypes/*": ["src/@types/*"],
+      "@itypes": ["src/@types"],
       "@config": ["src/config/index.ts"],
       "@exceptions/*": ["src/exceptions/*"],
       "@common": ["src/common/index.ts"],
-      "@router": ["src/router/index.ts"]
+      "@router": ["src/router/index.ts"],
+      "@middleware": ["src/middleware"],
+      "@utils": ["src/utils"]
     }
   },
   "types": ["jest", "node"],
