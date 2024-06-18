@@ -1,10 +1,12 @@
-import { IContainer, IController } from '@itypes';
+import { TConfig } from '@config';
+import { IContainer, IController, IDataProviders } from '@itypes';
 import { IFileToSearch } from '@itypes';
 import { Router } from 'express';
 
 export const createRouting = async (
   controllersPath: IFileToSearch,
   container: IContainer,
+  config: TConfig,
 ) => {
   const router = Router({ mergeParams: true });
   const routes: Record<string, IController> = {};
@@ -15,7 +17,11 @@ export const createRouting = async (
   );
 
   for (const { fileName, fullName, filePath } of controllersPaths) {
-    const controller = new (await import(filePath)).default(router, container);
+    const controller = new (await import(filePath)).default(
+      router,
+      container,
+      config,
+    );
     routes[fileName] = controller;
   }
   return routes;
