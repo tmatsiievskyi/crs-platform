@@ -1,4 +1,5 @@
 import { API_PREF } from '@common';
+import { TConfig } from '@config';
 import { IContainer, IController } from '@itypes';
 import { bodyParser, errorMiddleware } from '@middleware';
 import { requestLogger } from '@utils';
@@ -10,6 +11,7 @@ export class ExpressServer {
   constructor(
     private readonly routes: Record<string, IController>,
     private readonly container: IContainer,
+    private readonly config: TConfig,
   ) {}
 
   private initRouting() {
@@ -48,6 +50,8 @@ export class ExpressServer {
       res.send('Current User');
     });
 
-    this.server.listen(3000, () => console.log('Server listen port: 3000'));
+    this.server.listen(this.config.server.port, () =>
+      console.log(`Server listening port: ${this.config.server.port}`),
+    );
   }
 }
