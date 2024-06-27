@@ -1,7 +1,6 @@
 import { IContainer, INext, IRequest, IResponse, IRouter } from '@itypes';
 import { signInUserObject } from './dto';
 import { validate } from '@utils';
-import { readFile } from 'node:fs';
 import { AppError, AuthError } from '@common';
 
 class AuthController {
@@ -20,8 +19,14 @@ class AuthController {
       this.signIn,
     );
   }
-  check = (req: IRequest, res: IResponse) => {
-    res.send('Works');
+  check = async (req: IRequest, res: IResponse) => {
+    try {
+      const data = await this.container.data.db.raw('SELECT 1');
+      res.send('Works!!!');
+    } catch (err) {
+      res.send('oops');
+      console.log(err);
+    }
   };
   signIn = async (req: IRequest, res: IResponse, next: INext) => {
     try {

@@ -1,10 +1,16 @@
 {
   "name": "auth",
   "version": "1.0.0",
-  "type": "module",
   "main": "./dist/index.js",
   "scripts": {
-    "start:dev": "tsx watch --clear-screen=false ./src/index.ts"
+    "start:dev:cluster": "tsx watch --clear-screen=false  --env-file=.env ./src/index.ts",
+    "start:dev:local": "tsx watch --clear-screen=false --env-file=.env.local ./src/index.ts",
+    "knex": "tsx ./node_modules/knex/bin/cli.js --knexfile ./src/data/knexfile.ts",
+    "db:migration:create": "npm run knex migrate:make",
+    "db:migration:rollback": "npm run knex migrate:rollback",
+    "db:migration:run": "npm run knex migrate:latest",
+    "db:seed:make": "npm run knex seed:make",
+    "db:seed:run": "npm run knex seed:run"
   },
   "author": "MTI",
   "license": "ISC",

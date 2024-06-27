@@ -19,7 +19,7 @@ export class ExpressServer {
       this.server.use(API_PREF, controller.router);
     }
     this.server.use('*', (req, res) => {
-      res.status(404).send('Not Found');
+      res.status(404).send('Not Found111');
     });
   }
 
@@ -34,6 +34,7 @@ export class ExpressServer {
   }
 
   private initMiddlewares() {
+    // this.server.use((req, res) => console.log('request'));
     this.server.use(bodyParser);
   }
 
@@ -51,7 +52,7 @@ export class ExpressServer {
     });
 
     this.server.listen(this.config.server.port, () =>
-      console.log(`Server listening port: ${this.config.server.port}`),
+      console.log(`Server listening port: ${this.config.server.port}!`),
     );
   }
 }
