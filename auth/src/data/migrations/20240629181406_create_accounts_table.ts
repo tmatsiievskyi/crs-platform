@@ -30,4 +30,10 @@ export async function up(knex: Knex): Promise<void> {
   }
 }
 
-export async function down(knex: Knex): Promise<void> {}
+export async function down(knex: Knex): Promise<void> {
+  try {
+    await knex.schema.dropTable(TABLE_NAME);
+  } catch (error) {
+    console.log(error);
+  }
+}

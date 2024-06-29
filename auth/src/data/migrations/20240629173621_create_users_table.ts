@@ -24,8 +24,12 @@ export async function up(knex: Knex): Promise<void> {
       })
       .raw(
         `CREATE INDEX IDX_user_full_name ON "users" USING gin((first_name || ' ' || last_name) gin_trgm_ops)`,
-      );
-  } catch (error) {}
+      )
+      .raw('CREATE INDEX IDX_users_created_at on roles(created_at)')
+      .raw('CREATE INDEX IDX_users_updated_at on roles(updated_at)');
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function down(knex: Knex): Promise<void> {

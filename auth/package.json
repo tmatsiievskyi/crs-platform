@@ -4,13 +4,17 @@
   "main": "./dist/index.js",
   "scripts": {
     "start:dev:cluster": "tsx watch --clear-screen=false  --env-file=.env ./src/index.ts",
+    "start:dev:container": "tsx watch --clear-screen=false --env-file=.env.container ./src/index.ts",
     "start:dev:local": "tsx watch --clear-screen=false --env-file=.env.local ./src/index.ts",
     "knex": "tsx ./node_modules/knex/bin/cli.js --knexfile ./src/data/knexfile.ts",
+    "knex:container": "tsx --env-file=.env.container ./node_modules/knex/bin/cli.js  --knexfile ./src/data/knexfile.ts",
     "db:migration:create": "npm run knex migrate:make",
     "db:migration:rollback": "npm run knex migrate:rollback",
     "db:migration:run": "npm run knex migrate:latest",
+    "db:migration:run:container": "npm run knex:container migrate:latest",
     "db:seed:make": "npm run knex seed:make",
-    "db:seed:run": "npm run knex seed:run"
+    "db:seed:run": "npm run knex seed:run",
+    "db:seed:run:container": "npm run knex:container seed:run"
   },
   "author": "MTI",
   "license": "ISC",
