@@ -1,11 +1,19 @@
-import { IContainer, INext, IRequest, IResponse, IRouter } from '@itypes';
-import { signInUserObject } from './dto';
+import {
+  IContainer,
+  IController,
+  INext,
+  IRequest,
+  IResponse,
+  IRouter,
+} from '@itypes';
+import { SignUpUserDto, signInUserObject, signUpUserObject } from './dto';
 import { validate } from '@utils';
-import { readFile } from 'node:fs';
 import { AppError, AuthError } from '@common';
+import { AuthService } from './auth.service';
 
-class AuthController {
+class AuthController implements IController {
   public readonly controllerName = '/auth';
+  private readonly authService = new AuthService();
   constructor(
     private readonly router: IRouter,
     private readonly container: IContainer,
@@ -19,20 +27,41 @@ class AuthController {
       validate(signInUserObject),
       this.signIn,
     );
+    this.router.post(
+      `${this.controllerName}/sign-up`,
+      validate(signUpUserObject),
+      this.signUp,
+    );
   }
-  check = (req: IRequest, res: IResponse) => {
-    res.send('Works');
+  check = async (req: IRequest, res: IResponse) => {
+    try {
+      const data = await this.container.data.db.raw('SELECT 1');
+      res.json(data);
+    } catch (err) {
+      res.send('oops');
+      console.log(err);
+    }
   };
   signIn = async (req: IRequest, res: IResponse, next: INext) => {
     try {
-      throw new AuthError('asd111');
+      throw new AuthError('error');
     } catch (error) {
       next(error);
       return;
     }
-
-    res.send('Sign-in ok1');
   };
+  signUp = async (req: IRequest, res: IResponse, next: INext) => {
+    try {
+      const reqData: SignUpUserDto = req.body;
+      const data = await this.authService.register(reqData);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  signOut = async () => {};
+
+  lostPassword = async () => {};
 }
 
 export default AuthController;

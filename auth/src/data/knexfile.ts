@@ -1,4 +1,8 @@
 import type { Knex } from 'knex';
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../.env' });
+
+console.log(process.env);
 
 const connection: Knex.ConnectionConfig = {
   host: process.env.POSTGRES_HOST as string,
