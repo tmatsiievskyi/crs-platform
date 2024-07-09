@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@common/*": ["./src/common/*"],
+      "@core/*": ["./src/core/*"],
+      "@config": ["./src/config"],
+      "@config/*": ["./src/config/*"],
+      "@server/*": ["src/server/*"],
+      "@providers/*": ["src/providers/*"],
+      "@middleware/*": ["src/middleware/*"]
+    }
+  }
+}
