@@ -1,4 +1,4 @@
-import { DiCore } from '@core/di.core';
+import { DiCore } from '@core';
 
 import { LoggerDi } from './logger/logger.di';
 

@@ -5,6 +5,7 @@ import { container, inject, singleton } from 'tsyringe';
 import '@providers/provider.di';
 import '@config/config.di';
 import '@middleware/middleware.di';
+import '@modules/modules.di';
 
 import { Server } from '@server/server';
 

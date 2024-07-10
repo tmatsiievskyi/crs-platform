@@ -8,7 +8,7 @@ import {
   TExceptionMessage,
   TException,
 } from '@common/types';
-import { MiddlewareCore } from '@core/middleware.core';
+import { MiddlewareCore } from '@core';
 import { singleton } from 'tsyringe';
 
 @singleton()

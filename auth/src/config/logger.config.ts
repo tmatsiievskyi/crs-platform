@@ -1,4 +1,4 @@
-import { ConfigCore } from '@core/config.core';
+import { ConfigCore } from '@core';
 import { ILoggerConfig } from './_types';
 import { ELogClient } from '@common/enums';
 import { TConfigSSL } from '@common/types';

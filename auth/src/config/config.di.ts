@@ -1,6 +1,6 @@
 import { container } from 'tsyringe';
 
-import { DiCore } from '@core/di.core';
+import { DiCore } from '@core';
 import { EConfigKey } from '@common/enums';
 import { AppConfig } from './app.config';
 import { LoggerConfig } from './logger.config';

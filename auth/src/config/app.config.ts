@@ -1,4 +1,4 @@
-import { ConfigCore } from '@core/config.core';
+import { ConfigCore } from '@core';
 import { singleton } from 'tsyringe';
 import { IAppConfig } from './_types';
 import { TCors } from '@common/types';

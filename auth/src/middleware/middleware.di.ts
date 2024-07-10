@@ -1,6 +1,6 @@
 import { container } from 'tsyringe';
 
-import { DiCore } from '@core/di.core';
+import { DiCore } from '@core';
 import { EMiddlewareKey } from '@common/enums';
 import { InitMiddleware } from './init.middleware';
 import { LoggerMiddleware } from './logger.middleware';
