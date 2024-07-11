@@ -25,3 +25,14 @@ export interface IMiddleware {
 export type TRespCtx = {
   status?: EHttpStatusCode;
 };
+
+export type TCookieParam = {
+  domain: string;
+  expiresIn: string;
+  maxAge?: string;
+};
+
+export type TTokenPayload = {
+  accessToken?: string;
+  refreshToken?: string;
+};

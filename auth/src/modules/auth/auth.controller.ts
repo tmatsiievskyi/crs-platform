@@ -11,8 +11,18 @@ import {
 } from './_auth.type';
 import { TNext, TRequest, TResponse } from '@common/types';
 import { NextFunction } from 'express';
+import { inject, injectable } from 'tsyringe';
+import { EConfigKey } from '@common/enums';
+import { IJwtConfig } from '@config/_types';
 
+@injectable()
 export class AuthController extends ControllerCore implements IAuthController {
+  constructor(
+    @inject(EConfigKey.JWT) protected readonly jwtConfig: IJwtConfig,
+  ) {
+    super();
+  }
+
   signIn = async (_req: TAuthSignInReq, res: TResponse, next: TNext) => {
     try {
       const data = { message: 'sign-in' };

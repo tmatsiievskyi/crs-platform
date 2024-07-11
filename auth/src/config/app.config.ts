@@ -25,10 +25,7 @@ export class AppConfig extends ConfigCore implements IAppConfig {
   }
 
   protected init() {
-    this.domain = this.set(
-      'APP_DOMAIN',
-      this.schema.string().allow(null, '').default('localhost'),
-    );
+    // this.domain = this.set('APP_DOMAIN', this.schema.string().required());
 
     this.env = this.set(
       'NODE_ENV',
@@ -49,10 +46,7 @@ export class AppConfig extends ConfigCore implements IAppConfig {
       this.schema.string().allow(null, '').default(''),
     );
 
-    this.port = this.set(
-      'APP_PORT',
-      this.schema.number().allow(null, '').default(4000),
-    );
+    this.port = this.set('APP_PORT', this.schema.number().required());
 
     this.cors = {
       credentials: this.set<boolean>(
