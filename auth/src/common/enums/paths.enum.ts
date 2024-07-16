@@ -11,3 +11,7 @@ export enum EAuthPaths {
 
   REFRESH_TOKEN = '/refresh-token',
 }
+
+export enum EUsersPaths {
+  ALL = '/',
+}

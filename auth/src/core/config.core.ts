@@ -2,7 +2,6 @@ import { join } from 'node:path';
 
 import { config } from 'dotenv';
 
-// import { ENV_TEST } from '@common/constants';
 import { JoiUtil } from '@common/utils';
 import { TJoiCtx } from '@common/types';
 

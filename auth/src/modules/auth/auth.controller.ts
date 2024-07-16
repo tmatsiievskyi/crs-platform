@@ -13,11 +13,12 @@ import { TNext, TRequest, TResponse } from '@common/types';
 import { NextFunction } from 'express';
 import { inject, injectable } from 'tsyringe';
 import { EConfigKey } from '@common/enums';
-import { IJwtConfig } from '@config/_types';
+import { IAppConfig, IJwtConfig } from '@config/_types';
 
 @injectable()
 export class AuthController extends ControllerCore implements IAuthController {
   constructor(
+    @inject(EConfigKey.APP) protected readonly appConfig: IAppConfig,
     @inject(EConfigKey.JWT) protected readonly jwtConfig: IJwtConfig,
   ) {
     super();

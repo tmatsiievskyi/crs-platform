@@ -17,6 +17,11 @@ export type TRequest<
 > = Request<TParams, TResBody, TReqBody, TReqQuery>;
 export type TResponse = Response;
 export type TNext = NextFunction;
+export type TDeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: TDeepPartial<T[P]>;
+    }
+  : T;
 
 export interface IMiddleware {
   handler(data?: any): TRequestHandler | TErrorRequestHandler;
@@ -36,3 +41,10 @@ export type TTokenPayload = {
   accessToken?: string;
   refreshToken?: string;
 };
+
+export type TDbDateInfo = {
+  created_at: Date;
+  updated_at: Date;
+};
+
+export type TId = string;
