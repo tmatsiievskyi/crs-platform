@@ -3,7 +3,7 @@ import pinoHttp from 'pino-http';
 import { EConfigKey, ELoggerCtx, ELogLevel } from '@common/enums';
 import { TRequest } from '@common/types';
 import { IAppConfig } from '@config/_types';
-import { MiddlewareCore } from '@core/middleware.core';
+import { MiddlewareCore } from '@core';
 import { ELoggerInject } from '@providers/logger';
 import { LoggerService } from '@providers/logger/logger.service';
 import { singleton, inject } from 'tsyringe';

@@ -8,7 +8,8 @@ export class JoiUtil {
   }
 
   static validate<T>(key: string, ctx: TJoiCtx): T {
-    const { error, value } = ctx.schema.validate(ctx.value);
+    const data = ctx.schema.validate(ctx.value);
+    const { error, value } = data;
 
     if (error) {
       throw new Error(JoiUtil.transformError(key, error));

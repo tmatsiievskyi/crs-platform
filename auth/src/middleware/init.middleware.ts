@@ -1,6 +1,6 @@
 import { EConfigKey } from '@common/enums';
 import { TRequestHandler, TRequest, TResponse, TNext } from '@common/types';
-import { MiddlewareCore } from '@core/middleware.core';
+import { MiddlewareCore } from '@core';
 import { singleton, inject } from 'tsyringe';
 
 @singleton()

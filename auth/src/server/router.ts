@@ -1,10 +1,15 @@
 import { TRequest, TResponse } from '@common/types';
-import { RouterCore } from '@core/router.core';
-import { singleton } from 'tsyringe';
+import { RouterCore } from '@core';
+import { AuthRouter } from '@modules/auth/auth.router';
+import { UsersRouter } from '@modules/users/users.router';
+import { singleton, inject } from 'tsyringe';
 
 @singleton()
 export class AppRouter extends RouterCore {
-  constructor() {
+  constructor(
+    @inject(AuthRouter) private readonly authRouter: AuthRouter,
+    @inject(UsersRouter) private readonly usersRouter: UsersRouter,
+  ) {
     super();
 
     this.init();
@@ -12,6 +17,14 @@ export class AppRouter extends RouterCore {
 
   protected init(): void {
     this.base();
+
+    this.router.use(
+      '/v1/api/auth',
+      this.authRouter.getRouter(),
+      // (_req: TRequest, res: TResponse) => res.json({ message: 'sign iiin' }),
+    );
+
+    this.router.use('/v1/api/users', this.usersRouter.getRouter());
 
     this.notFound();
   }
@@ -23,6 +36,7 @@ export class AppRouter extends RouterCore {
   }
 
   private notFound() {
+    //TODO: update
     this.router.use((_req: TRequest, res: TResponse) => {
       res.send('Not Found');
     });
