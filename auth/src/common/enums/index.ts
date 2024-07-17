@@ -4,3 +4,4 @@ export * from './base.enum';
 export * from './httpStatus.enum';
 export * from './messageCode.enum';
 export * from './paths.enum';
+export * from './ajv.enum';

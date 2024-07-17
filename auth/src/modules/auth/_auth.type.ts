@@ -1,4 +1,10 @@
-import { TNext, TRequest, TResponse, TTokenPayload } from '@common/types';
+import {
+  TJsonSchemaOptions,
+  TNext,
+  TRequest,
+  TResponse,
+  TTokenPayload,
+} from '@common/types';
 
 export interface IAuthController {
   signIn(req: TAuthSignInReq, res: TResponse, next: TNext): Promise<void>;
@@ -33,6 +39,10 @@ export interface IAuthController {
 
 export interface IAuthService {
   handleSignIn(data: TSignInBody): Promise<TTokenPayload>;
+}
+
+export interface IAuthSchema {
+  signIn(): TJsonSchemaOptions;
 }
 
 export type TSignInBody = { email: string; password: string };

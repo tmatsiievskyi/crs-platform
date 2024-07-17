@@ -1,5 +1,6 @@
 import { EHttpStatusCode, EMessageCode } from '@common/enums';
-import { TException } from '@common/types/exceptions.type';
+import { exceptionsMessages } from '@common/messages';
+import { TException, TExceptionMessage } from '@common/types';
 
 export class HttpException extends Error {
   readonly message: string | object | any;
@@ -15,5 +16,15 @@ export class HttpException extends Error {
     this.messageCode = param?.messageCode || EMessageCode.INTERNAL_SERVER_ERROR;
     this.statusCode =
       param?.statusCode || EHttpStatusCode.INTERNAL_SERVER_ERROR;
+  }
+}
+
+export class UnprocessableEntityException extends HttpException {
+  constructor(message?: TExceptionMessage) {
+    super({
+      message: message || exceptionsMessages.unprocessableEntity,
+      messageCode: EMessageCode.UNPROCESSABLE_ENTITY,
+      statusCode: EHttpStatusCode.UNPROCESSABLE_ENTITY,
+    });
   }
 }
