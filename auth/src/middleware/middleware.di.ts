@@ -6,6 +6,7 @@ import { InitMiddleware } from './init.middleware';
 import { LoggerMiddleware } from './logger.middleware';
 import { ErrorMiddleware } from './error.middleware';
 import { UserSessionMiddleware } from './userSession.middleware';
+import { ValidateMiddleware } from './validate.middleware';
 
 class MiddlewareDi extends DiCore {
   register(): void {
@@ -13,6 +14,7 @@ class MiddlewareDi extends DiCore {
     this.registerReqLogger();
     this.registerErrorHandler();
     this.registerUserSession();
+    this.registerValidate();
   }
 
   private registerInit() {
@@ -32,6 +34,10 @@ class MiddlewareDi extends DiCore {
       EMiddlewareKey.USER_SESSION,
       UserSessionMiddleware,
     );
+  }
+
+  private registerValidate() {
+    container.registerSingleton(EMiddlewareKey.VALIDATE, ValidateMiddleware);
   }
 }
 

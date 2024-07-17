@@ -14,4 +14,16 @@ export class StringUtil {
       return '';
     }
   }
+
+  static escape(str?: string | null) {
+    if (typeof str !== 'string' || !str) {
+      return '';
+    }
+
+    return str
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\//g, '&#47;')
+      .replace(/\\/g, '&#92;');
+  }
 }
