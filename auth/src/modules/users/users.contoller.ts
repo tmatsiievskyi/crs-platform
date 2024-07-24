@@ -19,7 +19,20 @@ export class UsersController
   all = async (_req: TRequest, res: TResponse, next: TNext): Promise<void> => {
     try {
       const data = await this.usersService.getList({});
+      return this.sendJSON(res, data);
+    } catch (error) {
+      next(error);
+    }
+  };
 
+  getById = async (
+    req: TRequest,
+    res: TResponse,
+    next: TNext,
+  ): Promise<void> => {
+    const { id } = req.params;
+    try {
+      const data = await this.usersService.getById(id);
       return this.sendJSON(res, data);
     } catch (error) {
       next(error);

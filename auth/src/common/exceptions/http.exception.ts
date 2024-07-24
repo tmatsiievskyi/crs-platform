@@ -28,3 +28,13 @@ export class UnprocessableEntityException extends HttpException {
     });
   }
 }
+
+export class InternalServerExceptions extends HttpException {
+  constructor(message?: TExceptionMessage) {
+    super({
+      message: message || exceptionsMessages.internalServerError,
+      messageCode: EMessageCode.INTERNAL_SERVER_ERROR,
+      statusCode: EHttpStatusCode.INTERNAL_SERVER_ERROR,
+    });
+  }
+}

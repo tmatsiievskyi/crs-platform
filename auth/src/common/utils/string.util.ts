@@ -26,4 +26,20 @@ export class StringUtil {
       .replace(/\//g, '&#47;')
       .replace(/\\/g, '&#92;');
   }
+
+  static replace(
+    str: string,
+    keys: { [key: string]: string | number },
+    delimiter = ['{', '}'],
+  ): string {
+    const res = str;
+    Object.keys(keys).forEach((key) => {
+      return res.replaceAll(
+        `${delimiter[0]}${key}${delimiter[1]}`,
+        `${keys[key] ?? ''}`,
+      );
+    });
+
+    return res;
+  }
 }

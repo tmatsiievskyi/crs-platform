@@ -1,6 +1,13 @@
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '@common/constants';
+import { validationMessages } from '@common/messages';
 import { PAGE_SCHEMA, PAGE_UNLIMIT_ITEM_SCHEMA } from '@common/schemas';
-import { ISchema, TJsonSchema, TJsonSchemaProperty } from '@common/types';
+import {
+  ISchema,
+  TJsonSchema,
+  TJsonSchemaCtx,
+  TJsonSchemaProperty,
+} from '@common/types';
+import { StringUtil } from '@common/utils';
 
 export class SchemaCore implements ISchema {
   public getPage(): TJsonSchema {
@@ -52,7 +59,37 @@ export class SchemaCore implements ISchema {
   }
 
   protected getIdkey(schemaName: string) {
-    console.log(`${this.constructor.name}/${schemaName}`);
     return `${this.constructor.name}/${schemaName}`;
+  }
+
+  protected getString(key: string, opt?: TJsonSchemaCtx): TJsonSchemaProperty {
+    const { isOptional, ...param } = opt || { isOptional: false };
+    const minLength = isOptional ? 0 : opt?.minLength ?? 1;
+    const maxLength = opt?.maxLength;
+
+    return {
+      [key]: {
+        type: isOptional ? ['string', 'null'] : 'string',
+        transform: ['trim'],
+        ...param,
+        minLength,
+        ...(maxLength && { maxLength }),
+        errorMessage: {
+          type: 'Should be a string',
+          minLength: StringUtil.replace(validationMessages.minLength, {
+            size: minLength,
+          }),
+          ...(maxLength && {
+            maxLength: StringUtil.replace(validationMessages.maxLength, {
+              size: maxLength,
+            }),
+          }),
+          ...(param.format && {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            format: 'format', //TODO: update
+          }),
+        },
+      },
+    };
   }
 }

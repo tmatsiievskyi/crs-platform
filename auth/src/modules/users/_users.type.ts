@@ -1,33 +1,31 @@
-import { EUsersRole } from '@common/enums';
 import {
-  TDbDateInfo,
   TDeepPartial,
-  TId,
+  TJsonSchemaOptions,
   TNext,
   TRequest,
   TResponse,
 } from '@common/types';
+import { Users } from '@db';
 
-export type TUser = {
-  firstName: null | string;
-  lastName: null | string;
-  email: null | string;
-  emailVerified: boolean;
-  password?: string;
-  role: EUsersRole;
-};
+export type TUsers = Users;
+export type TUserQuery = TDeepPartial<Users>;
+export type TUserOptions = TUserQuery;
 
-export type TFullUser = TUser & TId & TDbDateInfo;
-export type TUserQuery = TDeepPartial<TFullUser>;
+export interface IUsersSchema {
+  findUserById(): TJsonSchemaOptions;
+}
 
 export interface IUsersController {
   all(req: TRequest, res: TResponse, next: TNext): Promise<void>;
+  getById(req: TRequest, res: TResponse, next: TNext): Promise<void>;
 }
 
 export interface IUsersService {
-  getList(query: TUserQuery): Promise<TFullUser[]>;
+  getList(query: TUserQuery): Promise<Users[]>;
+  getById(id: number): Promise<Users | undefined>;
 }
 
-export interface IUsersDao {
-  all(): Promise<TFullUser[]>;
+export interface IUsersRepository {
+  all(): Promise<Users[]>;
+  findById(id: number): Promise<Users | undefined>;
 }

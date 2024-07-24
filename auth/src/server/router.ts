@@ -18,11 +18,7 @@ export class AppRouter extends RouterCore {
   protected init(): void {
     this.base();
 
-    this.router.use(
-      '/v1/api/auth',
-      this.authRouter.getRouter(),
-      // (_req: TRequest, res: TResponse) => res.json({ message: 'sign iiin' }),
-    );
+    this.router.use('/v1/api/auth', this.authRouter.getRouter());
 
     this.router.use('/v1/api/users', this.usersRouter.getRouter());
 

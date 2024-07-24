@@ -14,4 +14,5 @@ export enum EAuthPaths {
 
 export enum EUsersPaths {
   ALL = '/',
+  FIND_BY_ID = '/:id',
 }

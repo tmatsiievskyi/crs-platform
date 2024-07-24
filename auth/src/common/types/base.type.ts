@@ -23,6 +23,8 @@ export type TDeepPartial<T> = T extends object
     }
   : T;
 
+export type TContext = Partial<PayloadContext>;
+
 export interface IMiddleware {
   handler(data?: any): TRequestHandler | TErrorRequestHandler;
 }
@@ -40,11 +42,6 @@ export type TCookieParam = {
 export type TTokenPayload = {
   accessToken?: string;
   refreshToken?: string;
-};
-
-export type TDbDateInfo = {
-  created_at: Date;
-  updated_at: Date;
 };
 
 export type TId = string;

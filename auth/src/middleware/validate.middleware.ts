@@ -5,7 +5,6 @@ import addKeywords from 'ajv-keywords';
 
 import {
   TRequestHandler,
-  // TErrorRequestHandler,
   TJsonSchemaOptions,
   TRequest,
   TResponse,

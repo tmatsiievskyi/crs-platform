@@ -28,3 +28,17 @@ export type TJsonSchemaOptions = {
   params?: TJsonSchema | null;
   query?: TJsonSchema | null;
 };
+
+export type TJsonSchemaCtx = {
+  isOptional?: boolean;
+  skipRepeatSymbols?: string[];
+} & Pick<
+  TJsonSchema,
+  | 'maxLength'
+  | 'minLength'
+  | 'minimum'
+  | 'maximum'
+  | 'format'
+  | 'transform'
+  | 'errorMessage'
+>;

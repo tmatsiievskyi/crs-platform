@@ -17,7 +17,7 @@ export enum EAuthKey {
 export enum EUsersKey {
   CONTROLLER = 'UsersController',
   SERVICE = 'UsersService',
-  DAO = 'UsersDao',
+  REPOSITORY = 'UsersRepository',
   SCHEMA = 'UsersSchema',
 }
 
