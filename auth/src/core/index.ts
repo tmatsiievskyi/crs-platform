@@ -4,5 +4,5 @@ export * from './di.core';
 export * from './middleware.core';
 export * from './router.core';
 export * from './service.core';
-export * from './dao.core';
+export * from './repository.core';
 export * from './schema.core';

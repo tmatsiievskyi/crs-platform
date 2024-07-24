@@ -8,7 +8,9 @@
       "@server/*": ["src/server/*"],
       "@providers/*": ["src/providers/*"],
       "@middleware/*": ["src/middleware/*"],
-      "@modules/*": ["./src/modules/*"]
+      "@modules/*": ["./src/modules/*"],
+      "@db": ["./src/db"],
+      "@db/*": ["./src/db/*"]
     }
   }
 }

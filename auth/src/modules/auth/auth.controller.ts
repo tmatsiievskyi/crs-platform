@@ -1,6 +1,7 @@
 import { ControllerCore } from '@core';
 import {
   IAuthController,
+  IAuthService,
   TAuthForgotPasswordReq,
   TAuthRefreshTokenReq,
   TAuthResetPasswordByEmailReq,
@@ -12,7 +13,7 @@ import {
 import { TNext, TRequest, TResponse } from '@common/types';
 import { NextFunction } from 'express';
 import { inject, injectable } from 'tsyringe';
-import { EConfigKey } from '@common/enums';
+import { EAuthKey, EConfigKey } from '@common/enums';
 import { IAppConfig, IJwtConfig } from '@config/_types';
 
 @injectable()
@@ -20,13 +21,20 @@ export class AuthController extends ControllerCore implements IAuthController {
   constructor(
     @inject(EConfigKey.APP) protected readonly appConfig: IAppConfig,
     @inject(EConfigKey.JWT) protected readonly jwtConfig: IJwtConfig,
+    @inject(EAuthKey.SERVICE) protected readonly service: IAuthService,
   ) {
     super();
   }
 
-  signIn = async (_req: TAuthSignInReq, res: TResponse, next: TNext) => {
+  signIn = async (
+    { body, userSession }: TAuthSignInReq,
+    res: TResponse,
+    next: TNext,
+  ) => {
     try {
-      const data = { message: 'sign-in' };
+      const data = await this.service.handleSignIn(body, {
+        userSession,
+      });
 
       return this.sendJSON(res, data);
     } catch (error) {

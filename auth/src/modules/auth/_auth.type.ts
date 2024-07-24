@@ -1,11 +1,12 @@
 import {
+  TContext,
   TJsonSchemaOptions,
   TNext,
   TRequest,
   TResponse,
   TTokenPayload,
 } from '@common/types';
-
+//Structure related
 export interface IAuthController {
   signIn(req: TAuthSignInReq, res: TResponse, next: TNext): Promise<void>;
   signUp(req: TAuthSignUpReq, res: TResponse, next: TNext): Promise<void>;
@@ -38,13 +39,14 @@ export interface IAuthController {
 }
 
 export interface IAuthService {
-  handleSignIn(data: TSignInBody): Promise<TTokenPayload>;
+  handleSignIn(data: TSignInBody, ctx?: TAuthContext): Promise<TTokenPayload>;
 }
 
 export interface IAuthSchema {
   signIn(): TJsonSchemaOptions;
 }
-
+// Request related
+export type TAuthContext = TContext;
 export type TSignInBody = { email: string; password: string };
 export type TSignUpBody = {
   firstName: string;

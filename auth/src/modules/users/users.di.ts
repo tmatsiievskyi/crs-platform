@@ -1,20 +1,22 @@
 import { DiCore } from '@core';
 import { container } from 'tsyringe';
-import { IUsersController, IUsersDao, IUsersService } from './_users.type';
+import { IUsersController, IUsersSchema, IUsersService } from './_users.type';
 import { EUsersKey } from '@common/enums';
-import { UsersDao } from './users.dao';
+import { UsersRepository } from './users.repository';
 import { UsersController } from './users.contoller';
 import { UsersService } from './users.service';
+import { UsersSchema } from './users.schema';
 
 export class UsersDi extends DiCore {
   register(): void {
-    this.registerDao();
+    this.registerRepository();
     this.registerController();
     this.registerService();
+    this.registerSchema();
   }
 
-  private registerDao() {
-    container.registerSingleton<IUsersDao>(EUsersKey.DAO, UsersDao);
+  private registerRepository() {
+    container.registerSingleton(EUsersKey.REPOSITORY, UsersRepository);
   }
 
   private registerController() {
@@ -26,5 +28,9 @@ export class UsersDi extends DiCore {
 
   private registerService() {
     container.register<IUsersService>(EUsersKey.SERVICE, UsersService);
+  }
+
+  private registerSchema() {
+    container.register<IUsersSchema>(EUsersKey.SCHEMA, UsersSchema);
   }
 }

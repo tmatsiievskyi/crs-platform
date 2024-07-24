@@ -25,8 +25,6 @@ export class AppConfig extends ConfigCore implements IAppConfig {
   }
 
   protected init() {
-    // this.domain = this.set('APP_DOMAIN', this.schema.string().required());
-
     this.env = this.set(
       'NODE_ENV',
       this.schema

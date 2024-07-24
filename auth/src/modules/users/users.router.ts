@@ -1,13 +1,18 @@
-import { EUsersKey, EUsersPaths } from '@common/enums';
+import { EMiddlewareKey, EUsersKey, EUsersPaths } from '@common/enums';
 import { RouterCore } from '@core';
 import { inject, injectable } from 'tsyringe';
-import { IUsersController } from './_users.type';
+import { IUsersController, IUsersSchema } from './_users.type';
+import { IMiddleware } from '@common/types';
 
 @injectable()
 export class UsersRouter extends RouterCore {
   constructor(
     @inject(EUsersKey.CONTROLLER)
     private readonly controller: IUsersController,
+    @inject(EMiddlewareKey.VALIDATE)
+    private readonly validateMiddleware: IMiddleware,
+    @inject(EUsersKey.SCHEMA)
+    private readonly usersSchema: IUsersSchema,
   ) {
     super();
 
@@ -16,5 +21,10 @@ export class UsersRouter extends RouterCore {
 
   protected init() {
     this.router.get(EUsersPaths.ALL, this.controller.all);
+    this.router.get(
+      EUsersPaths.FIND_BY_ID,
+      this.validateMiddleware.handler(this.usersSchema.findUserById()),
+      this.controller.getById,
+    );
   }
 }

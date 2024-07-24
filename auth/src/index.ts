@@ -30,5 +30,3 @@ class Bootstrap {
 }
 
 void container.resolve(Bootstrap).run();
-
-// CREATE EXTENSION pg_trgm;
