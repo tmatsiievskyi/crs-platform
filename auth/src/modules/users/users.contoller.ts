@@ -18,7 +18,7 @@ export class UsersController
 
   all = async (_req: TRequest, res: TResponse, next: TNext): Promise<void> => {
     try {
-      const data = await this.usersService.getList({});
+      const data = await this.usersService.findAll({});
       return this.sendJSON(res, data);
     } catch (error) {
       next(error);
@@ -32,7 +32,7 @@ export class UsersController
   ): Promise<void> => {
     const { id } = req.params;
     try {
-      const data = await this.usersService.getById(id);
+      const data = await this.usersService.findById(id);
       return this.sendJSON(res, data);
     } catch (error) {
       next(error);

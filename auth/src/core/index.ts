@@ -6,3 +6,4 @@ export * from './router.core';
 export * from './service.core';
 export * from './repository.core';
 export * from './schema.core';
+export * from './validator.core';

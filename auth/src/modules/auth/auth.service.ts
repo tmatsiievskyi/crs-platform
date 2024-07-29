@@ -13,7 +13,11 @@ export class AuthService extends ServiceCore implements IAuthService {
     super();
   }
 
-  async handleSignIn(_data: TSignInBody): Promise<TTokenPayload> {
+  async handleSignIn(data: TSignInBody): Promise<TTokenPayload> {
+    const user = await this.usersService.findByEmail(data.email);
+
+    console.log(user);
+
     return {};
   }
 }

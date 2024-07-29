@@ -9,7 +9,7 @@ export class RepositoryCore {
     this.tabelName = tableName;
   }
 
-  private get tabel() {
+  protected get tabel() {
     if (!this.tabelName) {
       throw new Error(`Table with name: ${this.tabelName} does not exist`);
     }
@@ -17,13 +17,13 @@ export class RepositoryCore {
     return db.selectFrom(this.tabelName);
   }
 
-  public all() {
+  protected all() {
     const query = this.tabel;
     console.log(query);
     return query.selectAll().execute();
   }
 
-  public findById(id: number) {
+  protected findById(id: number) {
     try {
       const dbResp = this.tabel
         .where('id', '=', id)

@@ -29,7 +29,7 @@ export class StringUtil {
 
   static replace(
     str: string,
-    keys: { [key: string]: string | number },
+    keys: Record<string, string | number>,
     delimiter = ['{', '}'],
   ): string {
     const res = str;
