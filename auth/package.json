@@ -10,9 +10,11 @@
     "lint:staged": "lint-staged",
     "lint:fix": "eslint \"src/**/*.ts\" --fix",
     "migrator": "NODE_ENV=development tsx ./src/db/migrator.ts",
+    "seedator": "NODE_ENV=development tsx ./src/db/seedator.ts",
     "migration:latest": "pnpm run migrator -- migration=latest",
     "migration:down": "pnpm run migrator -- migration=down",
-    "generate:_types.db:dev": "npx kysely-codegen --env-file=.env.development --out-file=src/db/_db.type.ts"
+    "generate:_types.db:dev": "npx kysely-codegen --env-file=.env.development --out-file=src/db/_db.type.ts",
+    "seed:dev": "NODE_ENV=development pnpm run seedator "
   },
   "keywords": [],
   "author": "",

@@ -12,11 +12,15 @@ export class UsersService extends ServiceCore implements IUsersService {
     super();
   }
 
-  getList(_query: TUserQuery) {
+  findAll(_query: TUserQuery) {
     return this.usersRepository.all();
   }
 
-  getById(id: number) {
+  findById(id: number) {
     return this.usersRepository.findById(id);
+  }
+
+  findByEmail(email: string) {
+    return this.usersRepository.findByEmail(email);
   }
 }

@@ -21,11 +21,17 @@ export interface IUsersController {
 }
 
 export interface IUsersService {
-  getList(query: TUserQuery): Promise<Users[]>;
-  getById(id: number): Promise<Users | undefined>;
+  findAll(query: TUserQuery): Promise<Users[]>;
+  findById(id: number): Promise<Users | undefined>;
+  findByEmail(email: string): Promise<Users | undefined>;
+}
+
+export interface IUsersValidatorService {
+  checkCredentials(user?: TUserQuery, password?: string): Promise<void>;
 }
 
 export interface IUsersRepository {
   all(): Promise<Users[]>;
   findById(id: number): Promise<Users | undefined>;
+  findByEmail(email: string): Promise<Users | undefined>;
 }
