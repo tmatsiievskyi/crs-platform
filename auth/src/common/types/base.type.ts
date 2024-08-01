@@ -45,3 +45,5 @@ export type TTokenPayload = {
 };
 
 export type TId = string;
+
+export type TFlexibleDate = string | null | Date;
