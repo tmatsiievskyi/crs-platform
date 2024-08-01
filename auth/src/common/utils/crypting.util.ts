@@ -4,10 +4,14 @@ import {
   SALT_DEVIDER,
   SALT_LENGTH,
 } from '@common/constants';
-import { randomBytes, scrypt, scryptSync } from 'crypto';
+import { randomBytes, timingSafeEqual, scrypt, randomUUID } from 'crypto';
 
 export class Crypting {
-  static hashPassword(password: string): Promise<string | null> {
+  static generateUuid() {
+    return randomUUID();
+  }
+
+  static hashPassword(password: string): Promise<string> {
     return new Promise((res, rej) => {
       if (!password) rej(null);
 
@@ -16,7 +20,7 @@ export class Crypting {
       scrypt(password, salt, HASH_KEY_LENGTH, (err, derivedKey) => {
         if (err) rej(err);
 
-        return res(this.serializeHash(derivedKey, salt));
+        res(this.serializeHash(derivedKey, salt));
       });
     });
   }
@@ -28,18 +32,36 @@ export class Crypting {
     return `${saltString}${SALT_DEVIDER}${hashString}`;
   }
 
-  static comparePasswords(hashedPassword: string, password: string) {
-    return new Promise((res, rej) => {
-      if (!hashedPassword || !password) {
-        res(false);
-      }
+  static deserializeHash(hashedString: string) {
+    const [salt, hash] = hashedString.split(SALT_DEVIDER);
+    if (!salt || !hash) {
+      throw new Error(`String: \n ${hashedString} can not be deserialized`);
+    }
 
-      const [salt, hash] = hashedPassword.split(SALT_DEVIDER);
-      if (!salt || !hash) {
+    const saltBuf = Buffer.from(salt, HASH_ENCODING);
+    const hashBuf = Buffer.from(hash, HASH_ENCODING);
+
+    return { salt, hash, saltBuf, hashBuf };
+  }
+
+  static async comparePasswords(
+    hashedPassword?: string | null,
+    password?: string,
+  ): Promise<boolean> {
+    return new Promise((res) => {
+      if (!hashedPassword || !password) {
         return res(false);
       }
 
-      const hashBuff = Buffer.from(hash, HASH_ENCODING);
+      const { saltBuf, hashBuf } = this.deserializeHash(hashedPassword);
+
+      scrypt(password, saltBuf, HASH_KEY_LENGTH, (err, derivedKey) => {
+        if (err || hashBuf.length !== derivedKey.length) {
+          return res(false);
+        }
+
+        return res(timingSafeEqual(hashBuf, derivedKey));
+      });
     });
   }
 }

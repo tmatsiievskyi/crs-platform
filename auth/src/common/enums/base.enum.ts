@@ -19,10 +19,15 @@ export enum EUsersKey {
   SERVICE = 'UsersService',
   REPOSITORY = 'UsersRepository',
   SCHEMA = 'UsersSchema',
+  VALIDATION_SERVICE = 'ValidationService',
 }
 
 export enum EUsersRole {
   USER = 'user',
   ADMIN = 'admin',
   SUPERADMIN = 'super_admin',
+}
+
+export enum ETokenTypes {
+  SIGNIN = 'Sign-in',
 }

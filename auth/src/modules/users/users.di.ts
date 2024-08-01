@@ -1,11 +1,17 @@
 import { DiCore } from '@core';
 import { container } from 'tsyringe';
-import { IUsersController, IUsersSchema, IUsersService } from './_users.type';
+import {
+  IUsersController,
+  IUsersSchema,
+  IUsersService,
+  IUsersValidatorService,
+} from './_users.type';
 import { EUsersKey } from '@common/enums';
 import { UsersRepository } from './users.repository';
 import { UsersController } from './users.contoller';
 import { UsersService } from './users.service';
 import { UsersSchema } from './users.schema';
+import { UsersValidationService } from './users.validator.service';
 
 export class UsersDi extends DiCore {
   register(): void {
@@ -13,6 +19,7 @@ export class UsersDi extends DiCore {
     this.registerController();
     this.registerService();
     this.registerSchema();
+    this.registerUserValidationService();
   }
 
   private registerRepository() {
@@ -32,5 +39,12 @@ export class UsersDi extends DiCore {
 
   private registerSchema() {
     container.register<IUsersSchema>(EUsersKey.SCHEMA, UsersSchema);
+  }
+
+  private registerUserValidationService() {
+    container.register<IUsersValidatorService>(
+      EUsersKey.VALIDATION_SERVICE,
+      UsersValidationService,
+    );
   }
 }

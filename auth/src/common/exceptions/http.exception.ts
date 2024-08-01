@@ -38,3 +38,23 @@ export class InternalServerExceptions extends HttpException {
     });
   }
 }
+
+export class TokenVerifyExceptions extends HttpException {
+  constructor(message?: TExceptionMessage) {
+    super({
+      message: message || exceptionsMessages.tokenVerify,
+      messageCode: EMessageCode.TOKEN_VERIFY,
+      statusCode: EHttpStatusCode.UNAUTHORIZED,
+    });
+  }
+}
+
+export class TokenExpiredExceptions extends HttpException {
+  constructor(message?: TExceptionMessage) {
+    super({
+      message: message || exceptionsMessages.tokenExpired,
+      messageCode: EMessageCode.TOKEN_EXPIRED,
+      statusCode: EHttpStatusCode.UNAUTHORIZED,
+    });
+  }
+}

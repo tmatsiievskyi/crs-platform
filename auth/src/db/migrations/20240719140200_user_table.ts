@@ -12,11 +12,11 @@ export async function up(db: Kysely<any>) {
   await db.schema
     .createTable(TABLE_NAME)
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn('firstName', 'varchar(64)')
-    .addColumn('lastName', 'varchar(64)')
+    .addColumn('firstName', 'varchar(128)')
+    .addColumn('lastName', 'varchar(128)')
     .addColumn('email', 'varchar(128)', (col) => col.unique())
     .addColumn('emailVerified', 'boolean', (col) => col.defaultTo(false))
-    .addColumn('password', 'varchar(64)')
+    .addColumn('password', 'varchar(256)')
     .addColumn('image', 'text')
     .addColumn('role', sql`roles`, (col) => col.defaultTo(EUsersRole.USER))
     .addColumn('created_at', 'timestamp', (col) =>

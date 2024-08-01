@@ -17,6 +17,7 @@ async function migrateToLatest() {
   let migrationError: unknown = null;
   let migrationResults: unknown = null;
 
+  console.log(operation, process.argv);
   switch (operation) {
     case 'latest': {
       const { error, results } = await migrator.migrateToLatest();
