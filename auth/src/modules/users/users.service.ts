@@ -1,5 +1,10 @@
 import { ServiceCore } from '@core';
-import { IUsersRepository, IUsersService, TUserQuery } from './_users.type';
+import {
+  IUsersRepository,
+  IUsersService,
+  TCreateUser,
+  TUserQuery,
+} from './_users.type';
 import { inject, injectable } from 'tsyringe';
 import { EUsersKey } from '@common/enums';
 
@@ -22,5 +27,10 @@ export class UsersService extends ServiceCore implements IUsersService {
 
   findByEmail(email: string) {
     return this.usersRepository.findByEmail(email);
+  }
+
+  create(data: TCreateUser) {
+    //TODO: add type
+    return this.usersRepository.create(data);
   }
 }

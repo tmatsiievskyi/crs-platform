@@ -1,6 +1,8 @@
 import { db } from '@db/database';
 import type { DB } from '@db';
 import { InternalServerExceptions } from '@common/exceptions/http.exception';
+// import { TDeepPartial } from '@common/types';
+import { InsertExpression } from 'kysely/dist/cjs/parser/insert-values-parser';
 
 export class RepositoryCore {
   protected readonly tabelName: keyof DB;
@@ -19,7 +21,6 @@ export class RepositoryCore {
 
   protected all() {
     const query = this.tabel;
-    console.log(query);
     return query.selectAll().execute();
   }
 
@@ -30,6 +31,18 @@ export class RepositoryCore {
         .selectAll()
         .executeTakeFirst();
       return dbResp;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
+  protected async create(entity: InsertExpression<DB, keyof DB>): Promise<any> {
+    try {
+      return await db
+        .insertInto(this.tabelName)
+        .values(entity)
+        .returningAll()
+        .executeTakeFirstOrThrow();
     } catch (error) {
       throw this.handleError(error);
     }

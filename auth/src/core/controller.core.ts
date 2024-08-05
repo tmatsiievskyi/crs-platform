@@ -3,12 +3,14 @@ import { EHttpStatusCode } from '@common/enums';
 import {
   TCookieParam,
   TDataForCookie,
+  TMappingParams,
   TRespCtx,
   TResponse,
   TTokenPayload,
 } from '@common/types';
-import { DateUtil } from '@common/utils';
+import { DateUtil, MappingUtil } from '@common/utils';
 import { IAppConfig, IJwtConfig } from '@config/_types';
+import { ClassConstructor, ClassTransformOptions } from 'class-transformer';
 
 export class ControllerCore {
   protected readonly appConfig!: IAppConfig;
@@ -32,20 +34,30 @@ export class ControllerCore {
 
     res.cookie(COOKIE_ACCESS_TOKEN, authTokens.accessToken, {
       domain: params.domain || '',
-      secure: true,
+      secure: this.appConfig.env === 'development' ? false : true,
       httpOnly: true,
       sameSite: 'lax',
-
       ...maxAge,
     });
 
     res.cookie(COOKIE_REFRESH_TOKEN, authTokens.refreshToken, {
       domain: params.domain || '',
-      secure: true,
+      secure: this.appConfig.env === 'development' ? false : true,
       sameSite: 'lax',
       httpOnly: true,
       ...maxAge,
     });
+  }
+
+  protected mapDataToDto<T extends Record<string, any>, U>(
+    dataIn: U | U[],
+    { cls, options }: Omit<TMappingParams<T, U>, 'data'>,
+  ) {
+    const dataOut = this.mapToDtoWithClass(dataIn, options, cls);
+
+    //TODO: add page logic
+
+    return dataOut;
   }
 
   private checkConfig() {
@@ -74,5 +86,21 @@ export class ControllerCore {
     const maxAge = DateUtil.parseStringToMs(options.maxAge || '');
 
     return { maxAge: maxAge };
+  }
+
+  private mapToDtoWithClass<V, T extends Record<string, unknown>>(
+    dataIn: V | V[],
+    options: ClassTransformOptions,
+    cls?: ClassConstructor<T>,
+  ): T | T[] {
+    if (cls) {
+      return MappingUtil.objToDto({
+        cls,
+        data: dataIn,
+        options,
+      });
+    }
+
+    return dataIn as T | T[];
   }
 }

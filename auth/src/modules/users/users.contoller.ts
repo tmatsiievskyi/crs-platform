@@ -1,8 +1,12 @@
 import { ControllerCore } from '@core';
 import { inject, injectable } from 'tsyringe';
-import { IUsersController, IUsersService } from './_users.type';
+import {
+  IUsersController,
+  IUsersService,
+  TCreateUserRequest,
+} from './_users.type';
 import { TRequest, TResponse, TNext } from '@common/types';
-import { EUsersKey } from '@common/enums';
+import { EHttpStatusCode, EUsersKey } from '@common/enums';
 
 @injectable()
 export class UsersController
@@ -37,5 +41,22 @@ export class UsersController
     } catch (error) {
       next(error);
     }
+  };
+
+  create = async (req: TCreateUserRequest, res: TResponse) => {
+    try {
+      await this.usersService.create(req.body);
+
+      return this.sendJSON(
+        res,
+        {
+          message: 'Created',
+          statusCode: EHttpStatusCode.CREATED,
+        },
+        {
+          status: EHttpStatusCode.CREATED,
+        },
+      );
+    } catch (error) {}
   };
 }

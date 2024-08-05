@@ -7,9 +7,17 @@ import {
 } from '@common/types';
 import { Users } from '@db';
 
-export type TUsers = Users;
-export type TUserQuery = TDeepPartial<Users>;
+export type TUsers = Omit<Users, 'id' | 'emailVerified'> & {
+  id: number;
+  emailVerified: boolean;
+};
+export type TUserQuery = TDeepPartial<TUsers>;
 export type TUserOptions = TUserQuery;
+export type TCreateUser = TDeepPartial<TUsers>;
+
+//requests
+export type TCreateUserRequest = TRequest<unknown, unknown, TCreateUser>;
+//---
 
 export interface IUsersSchema {
   findUserById(): TJsonSchemaOptions;
@@ -18,12 +26,14 @@ export interface IUsersSchema {
 export interface IUsersController {
   all(req: TRequest, res: TResponse, next: TNext): Promise<void>;
   getById(req: TRequest, res: TResponse, next: TNext): Promise<void>;
+  create(req: TCreateUserRequest, res: TResponse, next: TNext): Promise<void>;
 }
 
 export interface IUsersService {
-  findAll(query: TUserQuery): Promise<Users[]>;
-  findById(id: number): Promise<Users | undefined>;
-  findByEmail(email: string): Promise<Users | undefined>;
+  findAll(query: TUserQuery): Promise<TUsers[]>;
+  findById(id: number): Promise<TUsers | undefined>;
+  findByEmail(email: string): Promise<TUsers | undefined>;
+  create(data: TCreateUser): Promise<TUsers | undefined>;
 }
 
 export interface IUsersValidatorService {
@@ -31,7 +41,8 @@ export interface IUsersValidatorService {
 }
 
 export interface IUsersRepository {
-  all(): Promise<Users[]>;
-  findById(id: number): Promise<Users | undefined>;
-  findByEmail(email: string): Promise<Users | undefined>;
+  all(): Promise<TUsers[]>;
+  findById(id: number): Promise<TUsers | undefined>;
+  findByEmail(email: string): Promise<TUsers | undefined>;
+  create(data: TCreateUser): Promise<TUsers | undefined>;
 }

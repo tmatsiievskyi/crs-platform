@@ -1,4 +1,4 @@
-import { EHttpStatusCode } from '@common/enums';
+import { EHttpStatusCode, ETokenTypes } from '@common/enums';
 import {
   RequestHandler,
   ErrorRequestHandler,
@@ -40,6 +40,7 @@ export type TCookieParam = {
 };
 
 export type TTokenPayload = {
+  type: ETokenTypes;
   accessToken?: string;
   refreshToken?: string;
 };
