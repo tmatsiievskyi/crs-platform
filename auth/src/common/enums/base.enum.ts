@@ -22,6 +22,11 @@ export enum EUsersKey {
   VALIDATION_SERVICE = 'ValidationService',
 }
 
+export enum ERefreshTokenKey {
+  SERVICE = 'RefreshTokenService',
+  REPOSITORY = 'RefreshTokenRepository',
+}
+
 export enum EUsersRole {
   USER = 'user',
   ADMIN = 'admin',

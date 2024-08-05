@@ -15,6 +15,7 @@ import { NextFunction } from 'express';
 import { inject, injectable } from 'tsyringe';
 import { EAuthKey, EConfigKey } from '@common/enums';
 import { IAppConfig, IJwtConfig } from '@config/_types';
+import { AuthTokenDto } from './auth.token.dto';
 
 @injectable()
 export class AuthController extends ControllerCore implements IAuthController {
@@ -32,8 +33,21 @@ export class AuthController extends ControllerCore implements IAuthController {
     next: TNext,
   ) => {
     try {
-      const data = await this.service.handleSignIn(body, {
+      const dataInit = await this.service.handleSignIn(body, {
         userSession,
+      });
+      this.storeTokenInCookie(res, dataInit);
+      this.storeDataInCookie(res, {
+        name: 'is_loggedIn',
+        value: String(true),
+        options: {
+          httpOnly: false,
+        },
+      });
+
+      const data = this.mapDataToDto(dataInit, {
+        cls: AuthTokenDto,
+        options: {},
       });
 
       return this.sendJSON(res, data);

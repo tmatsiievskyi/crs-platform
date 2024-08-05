@@ -1,11 +1,12 @@
 import { ServiceCore } from '@core';
-import { IAuthService, TSignInBody } from './_auth.type';
+import { IAuthService, IAuthTokenService, TSignInBody } from './_auth.type';
 import { inject, injectable } from 'tsyringe';
 import { TTokenPayload } from '@common/types';
-import { EUsersKey } from '@common/enums';
+import { EAuthKey, ETokenTypes, EUsersKey } from '@common/enums';
 import {
   IUsersService,
   IUsersValidatorService,
+  TUsers,
 } from '@modules/users/_users.type';
 
 @injectable()
@@ -14,6 +15,8 @@ export class AuthService extends ServiceCore implements IAuthService {
     @inject(EUsersKey.SERVICE) protected readonly usersService: IUsersService,
     @inject(EUsersKey.VALIDATION_SERVICE)
     protected readonly userValidationService: IUsersValidatorService,
+    @inject(EAuthKey.TOKEN_SERVICE)
+    private readonly authTokenService: IAuthTokenService,
   ) {
     super();
   }
@@ -22,8 +25,20 @@ export class AuthService extends ServiceCore implements IAuthService {
     const user = await this.usersService.findByEmail(email);
 
     await this.userValidationService.checkCredentials(user, password);
-    console.log(user);
 
-    return {};
+    return this.getAuthTokens(user!);
+  }
+
+  private async getAuthTokens(user: TUsers) {
+    const { id, role } = user;
+    const [accessToken, refreshToken] = await Promise.all([
+      this.authTokenService.generateAccessToken(id, { id, role }),
+      this.authTokenService.generateRefreshToken(id),
+    ]);
+    return {
+      type: ETokenTypes.SIGNIN,
+      accessToken,
+      refreshToken,
+    };
   }
 }

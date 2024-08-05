@@ -7,3 +7,4 @@ export const SALT_DEVIDER = '.';
 export const HASH_ENCODING = 'hex';
 
 export const BIG_INT = Number.MAX_SAFE_INTEGER;
+export const LIMIT_ITEM = 20;

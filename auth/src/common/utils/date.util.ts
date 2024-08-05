@@ -3,6 +3,7 @@ import {
   isValid as fnsIsValid,
   parseISO as fnsParseISO,
   getUnixTime as fnsGetUnixTime,
+  addMilliseconds as fnsAddMilliseconds,
 } from 'date-fns';
 import { TFlexibleDate } from '@common/types';
 
@@ -27,6 +28,12 @@ export class DateUtil {
     const dateISO = this.parseISO(date);
 
     return fnsGetUnixTime(dateISO);
+  }
+
+  static addMillisecondToDate(date: TFlexibleDate, amount?: number) {
+    const dateISO = this.parseISO(date);
+
+    return fnsAddMilliseconds(dateISO, amount || 0);
   }
 
   private static isValid(date?: TFlexibleDate) {

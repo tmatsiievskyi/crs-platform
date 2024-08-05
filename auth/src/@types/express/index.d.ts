@@ -1,11 +1,11 @@
 type TUserPayload = {
-  id: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  isEmaiConfirmed?: boolean;
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  emailVerified: boolean;
   role: string;
-  image?: string;
+  image?: string | null;
 };
 
 type TUserSession = {

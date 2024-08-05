@@ -26,5 +26,6 @@ export class UsersRouter extends RouterCore {
       this.validateMiddleware.handler(this.usersSchema.findUserById()),
       this.controller.getById,
     );
+    this.router.post(EUsersPaths.CREATE, this.controller.create); // TODO: add verification
   }
 }

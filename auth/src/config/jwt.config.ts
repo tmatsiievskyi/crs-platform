@@ -22,7 +22,7 @@ export class JwtConfig extends ConfigCore implements IJwtConfig {
       ),
       expiresIn: this.set(
         'JWT_EXPIRES_IN_ACCESS_TOKEN',
-        this.schema.string().allow(null, '').default('30m'),
+        this.schema.string().allow(null, '').default('60m'),
       ),
     };
 
