@@ -1,14 +1,14 @@
-import { COOKIE_ACCESS_TOKEN, COOKIE_REFRESH_TOKEN } from '@common/constants';
 import { EHttpStatusCode } from '@common/enums';
+import { MissingConfigOptionException } from '@common/exceptions/http.exception';
+import { exceptionsMessages } from '@common/messages';
 import {
-  TCookieParam,
+  TCookieOptions,
   TDataForCookie,
   TMappingParams,
   TRespCtx,
   TResponse,
-  TTokenPayload,
 } from '@common/types';
-import { DateUtil, MappingUtil } from '@common/utils';
+import { DateUtil, MappingUtil, StringUtil } from '@common/utils';
 import { IAppConfig, IJwtConfig } from '@config/_types';
 import { ClassConstructor, ClassTransformOptions } from 'class-transformer';
 
@@ -24,29 +24,14 @@ export class ControllerCore {
     res.cookie(data.name, data.value, { ...data.options });
   }
 
-  protected storeTokenInCookie<T extends TTokenPayload>(
+  protected storeTokenInCookie(
     res: TResponse,
-    authTokens: Partial<T>,
-    options?: Partial<TCookieParam>,
+    name: keyof IJwtConfig,
+    token: string,
+    options?: Partial<TCookieOptions>,
   ) {
-    const params = this.getCookieParam(options);
-    const maxAge = this.getCookieMaxAge(params);
-
-    res.cookie(COOKIE_ACCESS_TOKEN, authTokens.accessToken, {
-      domain: params.domain || '',
-      secure: this.appConfig.env === 'development' ? false : true,
-      httpOnly: true,
-      sameSite: 'lax',
-      ...maxAge,
-    });
-
-    res.cookie(COOKIE_REFRESH_TOKEN, authTokens.refreshToken, {
-      domain: params.domain || '',
-      secure: this.appConfig.env === 'development' ? false : true,
-      sameSite: 'lax',
-      httpOnly: true,
-      ...maxAge,
-    });
+    const params = this.getJwtCookieParam(name, options);
+    res.cookie(name, token, { ...params });
   }
 
   protected mapDataToDto<T extends Record<string, any>, U>(
@@ -61,36 +46,31 @@ export class ControllerCore {
   }
 
   private checkConfig() {
-    if (!this.appConfig || this.jwtConfig) {
-      throw new Error('Missing jwt or auth config');
+    if (!this.appConfig || !this.jwtConfig) {
+      throw new MissingConfigOptionException(
+        StringUtil.replace(exceptionsMessages.missigOption, {
+          option: 'appConfig or jwtConfig',
+        }),
+      );
     }
   }
 
-  private getCookieParam(
-    options?: Partial<TCookieParam>,
-  ): Partial<TCookieParam> {
+  private getJwtCookieParam(name: keyof IJwtConfig, options?: TCookieOptions) {
     this.checkConfig();
 
     return {
-      expiresIn: this.jwtConfig.refreshToken.expiresIn,
+      maxAge: DateUtil.parseStringToMs(this.jwtConfig[name].expiresIn),
       domain: this.appConfig.domain,
+      httpOnly: true,
+      secure:
+        options?.secure || this.appConfig.env === 'development' ? false : true,
       ...options,
     };
   }
 
-  private getCookieMaxAge(options: Partial<TCookieParam>) {
-    if (!options.maxAge) {
-      return { maxAge: undefined };
-    }
-
-    const maxAge = DateUtil.parseStringToMs(options.maxAge || '');
-
-    return { maxAge: maxAge };
-  }
-
   private mapToDtoWithClass<V, T extends Record<string, unknown>>(
     dataIn: V | V[],
-    options: ClassTransformOptions,
+    options?: ClassTransformOptions,
     cls?: ClassConstructor<T>,
   ): T | T[] {
     if (cls) {

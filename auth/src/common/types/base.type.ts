@@ -41,8 +41,8 @@ export type TCookieParam = {
 
 export type TTokenPayload = {
   type: ETokenTypes;
-  accessToken?: string;
-  refreshToken?: string;
+  accessToken: string;
+  refreshToken: string;
 };
 
 export type TId = string;

@@ -18,4 +18,21 @@ export class AuthSchema extends SchemaCore implements IAuthSchema {
       },
     };
   }
+  signUp(): TJsonSchemaOptions {
+    return {
+      body: {
+        $id: this.getIdkey('signUp'),
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        additionalProperties: false,
+        required: ['firstName', 'lastName', 'email', 'password'],
+        properties: {
+          ...this.getString('firstName'),
+          ...this.getString('lastName'),
+          ...this.getEmail(),
+          ...this.getPassword(),
+        },
+      },
+    };
+  }
 }

@@ -84,10 +84,9 @@ export class SchemaCore implements ISchema {
               size: maxLength,
             }),
           }),
-          ...(param.format && {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            format: 'format', //TODO: update
-          }),
+          // ...(param.format && {
+          //   format: 'format', //TODO: update
+          // }),
         },
       },
     };
