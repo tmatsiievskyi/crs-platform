@@ -28,7 +28,11 @@ export class AuthRouter extends RouterCore {
       this.validateMiddleware.handler(this.schema.signIn()),
       this.controller.signIn,
     );
-    this.router.post(EAuthPaths.SIGNUP, this.controller.signUp);
+    this.router.post(
+      EAuthPaths.SIGNUP,
+      this.validateMiddleware.handler(this.schema.signUp()),
+      this.controller.signUp,
+    );
     this.router.post(EAuthPaths.SIGNOUT, this.controller.signOut);
 
     this.router.post(

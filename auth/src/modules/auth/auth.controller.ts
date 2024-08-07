@@ -16,6 +16,7 @@ import { inject, injectable } from 'tsyringe';
 import { EAuthKey, EConfigKey } from '@common/enums';
 import { IAppConfig, IJwtConfig } from '@config/_types';
 import { AuthTokenDto } from './auth.token.dto';
+import { COOKIE_ACCESS_TOKEN, COOKIE_REFRESH_TOKEN } from '@common/constants';
 
 @injectable()
 export class AuthController extends ControllerCore implements IAuthController {
@@ -36,18 +37,20 @@ export class AuthController extends ControllerCore implements IAuthController {
       const dataInit = await this.service.handleSignIn(body, {
         userSession,
       });
-      this.storeTokenInCookie(res, dataInit);
+      this.storeTokenInCookie(res, COOKIE_ACCESS_TOKEN, dataInit.accessToken);
+      this.storeTokenInCookie(res, COOKIE_REFRESH_TOKEN, dataInit.refreshToken);
       this.storeDataInCookie(res, {
         name: 'is_loggedIn',
         value: String(true),
         options: {
           httpOnly: false,
+          // TODO: add expires
         },
       });
 
       const data = this.mapDataToDto(dataInit, {
         cls: AuthTokenDto,
-        options: {},
+        // options: {}, // TODO: check
       });
 
       return this.sendJSON(res, data);
@@ -56,12 +59,12 @@ export class AuthController extends ControllerCore implements IAuthController {
     }
   };
   signUp = async (
-    _req: TAuthSignUpReq,
+    { body }: TAuthSignUpReq,
     res: TResponse,
     next: TNext,
   ): Promise<void> => {
     try {
-      const data = { message: 'sign-up' };
+      const data = await this.service.handleSignUp(body);
       return this.sendJSON(res, data);
     } catch (error) {
       next(error);

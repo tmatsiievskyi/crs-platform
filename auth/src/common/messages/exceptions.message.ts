@@ -6,4 +6,6 @@ export const exceptionsMessages = {
   tokenVerify:
     'An error occured while verifying the token. Please check you token',
   tokenExpired: 'Provided token is expired',
+  missigOption: '{option} is missing',
+  alreadyExists: '{entity} with {value} already exists',
 };

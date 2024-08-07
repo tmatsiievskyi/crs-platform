@@ -11,6 +11,6 @@ export type TMappingParams<T, U> = {
   cls?: ClassConstructor<T>;
   data: U;
   itemCount?: number;
-  options: ClassTransformOptions;
+  options?: ClassTransformOptions;
   pageOptions?: PageOptionsDto;
 };

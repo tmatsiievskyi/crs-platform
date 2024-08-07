@@ -34,6 +34,11 @@ export class AppConfig extends ConfigCore implements IAppConfig {
         .default(ENV_DEVELOPMENT),
     );
 
+    this.domain = this.set(
+      'APP_DOMAIN',
+      this.schema.string().allow(null, '').default('localhost'),
+    );
+
     this.host = this.set(
       'APP_HOST',
       this.schema.string().allow(null, '').default('http://localhost'),

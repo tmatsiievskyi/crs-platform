@@ -21,8 +21,10 @@ export type TJwtToken = {
   secret: string;
 };
 
+export type TCookieOptions = CookieOptions;
+
 export type TDataForCookie = {
   name: string;
   value: string;
-  options: CookieOptions;
+  options: TCookieOptions;
 };

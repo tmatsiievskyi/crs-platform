@@ -32,14 +32,13 @@ export class StringUtil {
     keys: Record<string, string | number>,
     delimiter = ['{', '}'],
   ): string {
-    const res = str;
+    let res = str;
     Object.keys(keys).forEach((key) => {
-      return res.replaceAll(
+      res = res.replaceAll(
         `${delimiter[0]}${key}${delimiter[1]}`,
         `${keys[key] ?? ''}`,
       );
     });
-
     return res;
   }
 }

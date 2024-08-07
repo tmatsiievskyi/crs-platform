@@ -19,6 +19,20 @@ export class HttpException extends Error {
   }
 }
 
+export class AppHttpException extends HttpException {
+  constructor(
+    message?: TExceptionMessage,
+    code?: EHttpStatusCode,
+    messageCode?: EMessageCode,
+  ) {
+    super({
+      message: message || exceptionsMessages.internalServerError,
+      messageCode: messageCode || EMessageCode.INTERNAL_SERVER_ERROR,
+      statusCode: code || EHttpStatusCode.INTERNAL_SERVER_ERROR,
+    });
+  }
+}
+
 export class UnprocessableEntityException extends HttpException {
   constructor(message?: TExceptionMessage) {
     super({
@@ -55,6 +69,26 @@ export class TokenExpiredExceptions extends HttpException {
       message: message || exceptionsMessages.tokenExpired,
       messageCode: EMessageCode.TOKEN_EXPIRED,
       statusCode: EHttpStatusCode.UNAUTHORIZED,
+    });
+  }
+}
+
+export class MissingConfigOptionException extends HttpException {
+  constructor(message?: TExceptionMessage) {
+    super({
+      message: message || exceptionsMessages.tokenExpired,
+      messageCode: EMessageCode.FORBIDDEN,
+      statusCode: EHttpStatusCode.FORBIDDEN,
+    });
+  }
+}
+
+export class AlreadyExistException extends HttpException {
+  constructor(message?: TExceptionMessage) {
+    super({
+      message: message || exceptionsMessages.alreadyExists,
+      messageCode: EMessageCode.BAD_REQUEST,
+      statusCode: EHttpStatusCode.BAD_REQUEST,
     });
   }
 }

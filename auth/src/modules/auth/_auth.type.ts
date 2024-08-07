@@ -41,6 +41,7 @@ export interface IAuthController {
 
 export interface IAuthService {
   handleSignIn(data: TSignInBody, ctx?: TAuthContext): Promise<TTokenPayload>;
+  handleSignUp(data: TSignUpBody, ctx?: TAuthContext): Promise<string>;
 }
 
 export interface IAuthTokenService {
@@ -53,6 +54,7 @@ export interface IAuthTokenService {
 
 export interface IAuthSchema {
   signIn(): TJsonSchemaOptions;
+  signUp(): TJsonSchemaOptions;
 }
 // ---
 // Request related
@@ -63,7 +65,6 @@ export type TSignUpBody = {
   lastName: string;
   email: string;
   password: string;
-  passwordConfirm: string;
 };
 export type TForgotPasswordBody = { email: string };
 export type TRefreshTokenBody = { refreshToken: string };
