@@ -1,6 +1,6 @@
 import { DiCore } from '@core';
 import { container } from 'tsyringe';
-import { ETokenInject, ITokenService } from './_types';
+import { ETokenProvider, ITokenService } from './_types';
 import { TokenService } from './token.service';
 
 export class TokenDi extends DiCore {
@@ -10,7 +10,7 @@ export class TokenDi extends DiCore {
 
   private registerService() {
     container.registerSingleton<ITokenService>(
-      ETokenInject.SERVICE,
+      ETokenProvider.SERVICE,
       TokenService,
     );
   }

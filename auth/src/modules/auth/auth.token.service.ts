@@ -3,7 +3,7 @@ import { Crypting, DateUtil } from '@common/utils';
 import { IJwtConfig } from '@config/_types';
 import { ServiceCore } from '@core';
 import { IRefreshTokenService } from '@modules/refreshToken/_refreshToken.type';
-import { ETokenInject, ITokenService } from '@providers/token';
+import { ETokenProvider, ITokenService } from '@providers/token';
 import { inject, injectable } from 'tsyringe';
 import { IAuthTokenService } from './_auth.type';
 import { TUsers } from '@modules/users/_users.type';
@@ -12,7 +12,8 @@ import { TUsers } from '@modules/users/_users.type';
 export class AuthTokenService extends ServiceCore implements IAuthTokenService {
   constructor(
     @inject(EConfigKey.JWT) private readonly jwtConfig: IJwtConfig,
-    @inject(ETokenInject.SERVICE) private readonly tokenService: ITokenService,
+    @inject(ETokenProvider.SERVICE)
+    private readonly tokenService: ITokenService,
     @inject(ERefreshTokenKey.SERVICE)
     private readonly refreshTokenService: IRefreshTokenService,
   ) {
@@ -26,7 +27,7 @@ export class AuthTokenService extends ServiceCore implements IAuthTokenService {
     );
 
     return this.tokenService.signJwt(
-      { ...payload, jti, sub: String(userId), typ: ETokenTypes.SIGNIN },
+      { ...payload, jti, sub: String(userId), typ: ETokenTypes.BEARER },
       this.jwtConfig.accessToken.secret,
       { expiresIn },
     );
@@ -41,7 +42,7 @@ export class AuthTokenService extends ServiceCore implements IAuthTokenService {
 
     const [refreshToken] = await Promise.all([
       this.tokenService.signJwt(
-        { sub: String(userId), jti, typ: ETokenTypes.SIGNIN },
+        { sub: String(userId), jti, typ: ETokenTypes.BEARER },
         this.jwtConfig.refreshToken.secret,
         { expiresIn },
       ),

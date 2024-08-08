@@ -66,18 +66,25 @@ export class AuthService extends ServiceCore implements IAuthService {
       lastName,
     });
 
+    await this.sendVerifyCodeByEmail(createdUser!);
+
     this.log(`Registered user with email: ${createdUser?.email}`);
-    return 'sign-up111';
+    return 'sign-up111'; // TODO: finish
+  }
+
+  private async sendVerifyCodeByEmail(user: TUsers) {
+    this.userValidationService.checkEmailIsNotEmpty(user);
+    this.userValidationService.checkEmailIsNotVerified(user);
   }
 
   private async getAuthTokens(user: TUsers) {
-    const { id, role } = user;
+    const { id, role, email } = user;
     const [accessToken, refreshToken] = await Promise.all([
-      this.authTokenService.generateAccessToken(id, { id, role }),
+      this.authTokenService.generateAccessToken(id, { id, role, email }),
       this.authTokenService.generateRefreshToken(id),
     ]);
     return {
-      type: ETokenTypes.SIGNIN,
+      type: ETokenTypes.BEARER,
       accessToken,
       refreshToken,
     };

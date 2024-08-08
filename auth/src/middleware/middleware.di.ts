@@ -7,6 +7,8 @@ import { LoggerMiddleware } from './logger.middleware';
 import { ErrorMiddleware } from './error.middleware';
 import { UserSessionMiddleware } from './userSession.middleware';
 import { ValidateMiddleware } from './validate.middleware';
+import { AuthMiddleware } from './auth.middleware';
+import { IMiddleware } from '@common/types';
 
 class MiddlewareDi extends DiCore {
   register(): void {
@@ -15,29 +17,49 @@ class MiddlewareDi extends DiCore {
     this.registerErrorHandler();
     this.registerUserSession();
     this.registerValidate();
+    this.registerAuth();
   }
 
   private registerInit() {
-    container.registerSingleton(EMiddlewareKey.INIT, InitMiddleware);
+    container.registerSingleton<IMiddleware>(
+      EMiddlewareKey.INIT,
+      InitMiddleware,
+    );
   }
 
   private registerReqLogger() {
-    container.registerSingleton(EMiddlewareKey.LOGGER, LoggerMiddleware);
+    container.registerSingleton<IMiddleware>(
+      EMiddlewareKey.LOGGER,
+      LoggerMiddleware,
+    );
   }
 
   private registerErrorHandler() {
-    container.registerSingleton(EMiddlewareKey.ERROR, ErrorMiddleware);
+    container.registerSingleton<IMiddleware>(
+      EMiddlewareKey.ERROR,
+      ErrorMiddleware,
+    );
   }
 
   private registerUserSession() {
-    container.registerSingleton(
+    container.registerSingleton<IMiddleware>(
       EMiddlewareKey.USER_SESSION,
       UserSessionMiddleware,
     );
   }
 
   private registerValidate() {
-    container.registerSingleton(EMiddlewareKey.VALIDATE, ValidateMiddleware);
+    container.registerSingleton<IMiddleware>(
+      EMiddlewareKey.VALIDATE,
+      ValidateMiddleware,
+    );
+  }
+
+  private registerAuth() {
+    container.registerSingleton<IMiddleware>(
+      EMiddlewareKey.AUTH,
+      AuthMiddleware,
+    );
   }
 }
 

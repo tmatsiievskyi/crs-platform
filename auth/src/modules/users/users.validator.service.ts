@@ -24,4 +24,16 @@ export class UsersValidationService
       );
     }
   }
+
+  checkEmailIsNotEmpty(user?: TUserQuery) {
+    if (!user || !user.email) {
+      this.throwException('user', validationMessages.emptyEmail);
+    }
+  }
+
+  checkEmailIsNotVerified(user?: TUserQuery) {
+    if (!user || user.emailVerified) {
+      this.throwException('user', validationMessages.emailAlreadyConfirmed);
+    }
+  }
 }

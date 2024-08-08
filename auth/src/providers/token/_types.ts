@@ -14,6 +14,6 @@ export interface ITokenService {
   ): Promise<T>;
 }
 
-export enum ETokenInject {
+export enum ETokenProvider {
   SERVICE = 'TokenService',
 }

@@ -13,6 +13,8 @@ export class UsersRouter extends RouterCore {
     private readonly validateMiddleware: IMiddleware,
     @inject(EUsersKey.SCHEMA)
     private readonly usersSchema: IUsersSchema,
+    @inject(EMiddlewareKey.AUTH)
+    private readonly authMiddleware: IMiddleware,
   ) {
     super();
 
@@ -20,10 +22,15 @@ export class UsersRouter extends RouterCore {
   }
 
   protected init() {
-    this.router.get(EUsersPaths.ALL, this.controller.all);
+    this.router.get(
+      EUsersPaths.ALL,
+      this.authMiddleware.handler(),
+      this.controller.all,
+    );
     this.router.get(
       EUsersPaths.FIND_BY_ID,
       this.validateMiddleware.handler(this.usersSchema.findUserById()),
+      this.authMiddleware.handler(),
       this.controller.getById,
     );
     this.router.post(EUsersPaths.CREATE, this.controller.create); // TODO: add verification

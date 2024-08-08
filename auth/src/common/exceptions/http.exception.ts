@@ -1,5 +1,5 @@
 import { EHttpStatusCode, EMessageCode } from '@common/enums';
-import { exceptionsMessages } from '@common/messages';
+import { exceptionsMessages, validationMessages } from '@common/messages';
 import { TException, TExceptionMessage } from '@common/types';
 
 export class HttpException extends Error {
@@ -89,6 +89,16 @@ export class AlreadyExistException extends HttpException {
       message: message || exceptionsMessages.alreadyExists,
       messageCode: EMessageCode.BAD_REQUEST,
       statusCode: EHttpStatusCode.BAD_REQUEST,
+    });
+  }
+}
+
+export class TokenNotProvidedException extends HttpException {
+  constructor() {
+    super({
+      message: validationMessages.tokenNotProvided,
+      messageCode: EMessageCode.TOKEN_NOT_PROVIDED,
+      statusCode: EHttpStatusCode.UNAUTHORIZED,
     });
   }
 }
