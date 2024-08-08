@@ -1,10 +1,10 @@
 type TUserPayload = {
-  id: number;
-  firstName: string;
-  lastName: string;
+  userId: number;
   email: string;
-  emailVerified: boolean;
   role: string;
+  firstName?: string;
+  lastName?: string;
+  emailVerified?: boolean;
   image?: string | null;
 };
 
@@ -21,6 +21,14 @@ type PayloadContext = {
   user: TUserPayload;
   userSession?: TUserSession;
 };
+
+type TJwtPayload = {
+  jti: string;
+  sub: number;
+  typ: string;
+};
+
+type TAccessTokenPayload = TUserPayload & TJwtPayload;
 
 declare namespace Express {
   export interface Request {

@@ -12,6 +12,6 @@ export class AuthTokenDto implements TTokenPayload {
   refreshToken!: string;
 
   @Expose()
-  @Transform(({ value }) => value || ETokenTypes.SIGNIN)
+  @Transform(({ value }) => value || ETokenTypes.BEARER)
   type!: ETokenTypes;
 }

@@ -38,6 +38,8 @@ export interface IUsersService {
 
 export interface IUsersValidatorService {
   checkCredentials(user?: TUserQuery, password?: string): Promise<void>;
+  checkEmailIsNotEmpty(user?: TUserQuery): void;
+  checkEmailIsNotVerified(user?: TUserQuery): void;
 }
 
 export interface IUsersRepository {

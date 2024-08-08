@@ -34,5 +34,5 @@ export enum EUsersRole {
 }
 
 export enum ETokenTypes {
-  SIGNIN = 'Sign-in',
+  BEARER = 'Bearer',
 }
