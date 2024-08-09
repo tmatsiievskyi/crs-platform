@@ -1,5 +1,5 @@
 type TUserPayload = {
-  userId: number;
+  id: number;
   email: string;
   role: string;
   firstName?: string;

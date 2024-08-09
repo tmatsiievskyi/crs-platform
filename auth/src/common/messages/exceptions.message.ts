@@ -8,4 +8,5 @@ export const exceptionsMessages = {
   tokenExpired: 'Provided token is expired',
   missigOption: '{option} is missing',
   alreadyExists: '{entity} with {value} already exists',
+  notDeleted: '{entity} was not deleted',
 };

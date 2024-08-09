@@ -5,7 +5,8 @@ import {
   TCreateRefreshToken,
 } from './_refreshToken.type';
 import { inject, injectable } from 'tsyringe';
-import { ERefreshTokenKey } from '@common/enums';
+import { ERefreshTokenModule } from '@common/enums';
+import { TDeleteResult } from '@common/types';
 
 @injectable()
 export class RefreshTokenService
@@ -13,7 +14,7 @@ export class RefreshTokenService
   implements IRefreshTokenService
 {
   constructor(
-    @inject(ERefreshTokenKey.REPOSITORY)
+    @inject(ERefreshTokenModule.REPOSITORY)
     protected readonly refreshTokenRepository: IRefreshTokenRepository,
   ) {
     super();
@@ -21,5 +22,9 @@ export class RefreshTokenService
 
   create(data: TCreateRefreshToken) {
     return this.refreshTokenRepository.create(data);
+  }
+
+  deleteByUserId(userId: number): Promise<TDeleteResult> {
+    return this.refreshTokenRepository.deleteByUserId(userId);
   }
 }

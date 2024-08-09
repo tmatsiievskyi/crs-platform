@@ -45,6 +45,10 @@ export class ControllerCore {
     return dataOut;
   }
 
+  protected removeDataFromCookie(res: TResponse, name: string) {
+    res.cookie(name, null, { maxAge: 0 });
+  }
+
   private checkConfig() {
     if (!this.appConfig || !this.jwtConfig) {
       throw new MissingConfigOptionException(
@@ -61,7 +65,7 @@ export class ControllerCore {
     return {
       maxAge: DateUtil.parseStringToMs(this.jwtConfig[name].expiresIn),
       domain: this.appConfig.domain,
-      httpOnly: true,
+      httpOnly: false,
       secure:
         options?.secure || this.appConfig.env === 'development' ? false : true,
       ...options,

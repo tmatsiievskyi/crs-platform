@@ -42,6 +42,7 @@ export interface IAuthController {
 export interface IAuthService {
   handleSignIn(data: TSignInBody, ctx?: TAuthContext): Promise<TTokenPayload>;
   handleSignUp(data: TSignUpBody, ctx?: TAuthContext): Promise<string>;
+  handleSignOut(userId: number): Promise<string>;
 }
 
 export interface IAuthTokenService {

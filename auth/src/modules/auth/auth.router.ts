@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import { EAuthKey, EAuthPaths, EMiddlewareKey } from '@common/enums';
+import { EAuthModule, EAuthPaths, EMiddlewareKey } from '@common/enums';
 import { RouterCore } from '@core';
 import { IAuthController, IAuthSchema } from './_auth.type';
 import { IMiddleware } from '@common/types';
@@ -7,14 +7,16 @@ import { IMiddleware } from '@common/types';
 @injectable()
 export class AuthRouter extends RouterCore {
   constructor(
-    @inject(EAuthKey.CONTROLLER)
+    @inject(EAuthModule.CONTROLLER)
     private readonly controller: IAuthController,
-    @inject(EAuthKey.SCHEMA)
+    @inject(EAuthModule.SCHEMA)
     private readonly schema: IAuthSchema,
     @inject(EMiddlewareKey.USER_SESSION)
     private readonly userSessionMiddleware: IMiddleware,
     @inject(EMiddlewareKey.VALIDATE)
     private readonly validateMiddleware: IMiddleware,
+    @inject(EMiddlewareKey.AUTH)
+    private readonly authMiddleware: IMiddleware,
   ) {
     super();
 
@@ -33,7 +35,11 @@ export class AuthRouter extends RouterCore {
       this.validateMiddleware.handler(this.schema.signUp()),
       this.controller.signUp,
     );
-    this.router.post(EAuthPaths.SIGNOUT, this.controller.signOut);
+    this.router.post(
+      EAuthPaths.SIGNOUT,
+      this.authMiddleware.handler(),
+      this.controller.signOut,
+    );
 
     this.router.post(
       EAuthPaths.FORGOT_PASSWORD_EMAIL,

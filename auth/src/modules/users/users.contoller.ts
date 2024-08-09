@@ -6,7 +6,7 @@ import {
   TCreateUserRequest,
 } from './_users.type';
 import { TRequest, TResponse, TNext } from '@common/types';
-import { EHttpStatusCode, EUsersKey } from '@common/enums';
+import { EHttpStatusCode, EUsersModule } from '@common/enums';
 
 @injectable()
 export class UsersController
@@ -14,7 +14,7 @@ export class UsersController
   implements IUsersController
 {
   constructor(
-    @inject(EUsersKey.SERVICE)
+    @inject(EUsersModule.SERVICE)
     protected readonly usersService: IUsersService,
   ) {
     super();

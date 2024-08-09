@@ -8,11 +8,12 @@ import {
 import { inject, injectable } from 'tsyringe';
 import { TTokenPayload } from '@common/types';
 import {
-  EAuthKey,
+  EAuthModule,
   EHttpStatusCode,
   EMessageCode,
+  ERefreshTokenModule,
   ETokenTypes,
-  EUsersKey,
+  EUsersModule,
 } from '@common/enums';
 import {
   IUsersService,
@@ -22,16 +23,20 @@ import {
 import { Crypting, StringUtil } from '@common/utils';
 import { exceptionsMessages } from '@common/messages';
 import { ELoggerInject, ILoggerService } from '@providers/logger';
+import { IRefreshTokenService } from '@modules/refreshToken/_refreshToken.type';
 
 @injectable()
 export class AuthService extends ServiceCore implements IAuthService {
   constructor(
-    @inject(EUsersKey.SERVICE) protected readonly usersService: IUsersService,
-    @inject(EUsersKey.VALIDATION_SERVICE)
+    @inject(EUsersModule.SERVICE)
+    protected readonly usersService: IUsersService,
+    @inject(EUsersModule.VALIDATION_SERVICE)
     protected readonly userValidationService: IUsersValidatorService,
-    @inject(EAuthKey.TOKEN_SERVICE)
+    @inject(EAuthModule.TOKEN_SERVICE)
     private readonly authTokenService: IAuthTokenService,
     @inject(ELoggerInject.SERVICE) protected readonly logger: ILoggerService,
+    @inject(ERefreshTokenModule.SERVICE)
+    private readonly refreshTokenService: IRefreshTokenService,
   ) {
     super();
   }
@@ -41,6 +46,7 @@ export class AuthService extends ServiceCore implements IAuthService {
 
     await this.userValidationService.checkCredentials(user, password);
 
+    this.log(`User with id  ${user?.id} just sign-in`);
     return this.getAuthTokens(user!);
   }
 
@@ -68,8 +74,24 @@ export class AuthService extends ServiceCore implements IAuthService {
 
     await this.sendVerifyCodeByEmail(createdUser!);
 
-    this.log(`Registered user with email: ${createdUser?.email}`);
-    return 'sign-up111'; // TODO: finish
+    this.log(`Sign-up user with email: ${createdUser?.email}`);
+    return 'sign-up'; // TODO: finish
+  }
+
+  async handleSignOut(userId: number) {
+    const data = await this.refreshTokenService.deleteByUserId(userId);
+
+    if (!data.numDeletedRows) {
+      throw this.handleError({
+        message: StringUtil.replace(exceptionsMessages.notDeleted, {
+          entity: 'refresh_token',
+        }),
+        code: EHttpStatusCode.CONFLICT,
+        messageCode: EMessageCode.CONFLICT,
+      });
+    }
+    this.log(`User with id  ${userId} just signed-out`);
+    return 'ok';
   }
 
   private async sendVerifyCodeByEmail(user: TUsers) {
@@ -80,7 +102,11 @@ export class AuthService extends ServiceCore implements IAuthService {
   private async getAuthTokens(user: TUsers) {
     const { id, role, email } = user;
     const [accessToken, refreshToken] = await Promise.all([
-      this.authTokenService.generateAccessToken(id, { id, role, email }),
+      this.authTokenService.generateAccessToken(id, {
+        id,
+        role,
+        email,
+      }),
       this.authTokenService.generateRefreshToken(id),
     ]);
     return {

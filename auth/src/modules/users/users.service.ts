@@ -6,12 +6,12 @@ import {
   TUserQuery,
 } from './_users.type';
 import { inject, injectable } from 'tsyringe';
-import { EUsersKey } from '@common/enums';
+import { EUsersModule } from '@common/enums';
 
 @injectable()
 export class UsersService extends ServiceCore implements IUsersService {
   constructor(
-    @inject(EUsersKey.REPOSITORY)
+    @inject(EUsersModule.REPOSITORY)
     protected readonly usersRepository: IUsersRepository,
   ) {
     super();

@@ -6,6 +6,7 @@ import {
   Response,
   NextFunction,
 } from 'express';
+import { DeleteResult } from 'kysely';
 
 export type TRequestHandler = RequestHandler;
 export type TErrorRequestHandler = ErrorRequestHandler;
@@ -17,6 +18,7 @@ export type TRequest<
 > = Request<TParams, TResBody, TReqBody, TReqQuery>;
 export type TResponse = Response;
 export type TNext = NextFunction;
+export type TDeleteResult = DeleteResult;
 export type TDeepPartial<T> = T extends object
   ? {
       [P in keyof T]?: TDeepPartial<T[P]>;
