@@ -4,9 +4,19 @@ import { singleton } from 'tsyringe';
 
 @singleton()
 export class UsersRepository extends RepositoryCore {
-  protected tabelName: keyof DB = 'users';
+  protected tabelName: keyof DB;
+
+  constructor() {
+    const tableName = 'users';
+    super(tableName);
+    this.tabelName = tableName;
+  }
 
   protected findByEmail(email: string) {
-    return this.tabel.where('email', '=', email).selectAll().executeTakeFirst();
+    return this.db
+      .selectFrom(this.tabelName)
+      .where('email', '=', email)
+      .selectAll()
+      .executeTakeFirst();
   }
 }

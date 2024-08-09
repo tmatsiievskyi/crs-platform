@@ -1,4 +1,4 @@
-import { EConfigKey, ERefreshTokenKey, ETokenTypes } from '@common/enums';
+import { EConfigKey, ERefreshTokenModule, ETokenTypes } from '@common/enums';
 import { Crypting, DateUtil } from '@common/utils';
 import { IJwtConfig } from '@config/_types';
 import { ServiceCore } from '@core';
@@ -14,7 +14,7 @@ export class AuthTokenService extends ServiceCore implements IAuthTokenService {
     @inject(EConfigKey.JWT) private readonly jwtConfig: IJwtConfig,
     @inject(ETokenProvider.SERVICE)
     private readonly tokenService: ITokenService,
-    @inject(ERefreshTokenKey.SERVICE)
+    @inject(ERefreshTokenModule.SERVICE)
     private readonly refreshTokenService: IRefreshTokenService,
   ) {
     super();

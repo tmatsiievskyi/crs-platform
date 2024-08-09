@@ -1,4 +1,4 @@
-import { ERefreshTokenKey } from '@common/enums';
+import { ERefreshTokenModule } from '@common/enums';
 import { DiCore } from '@core';
 import { container } from 'tsyringe';
 import { RefreshTokenRepository } from './refreshToken.repository';
@@ -12,11 +12,14 @@ export class RefreshTokenDi extends DiCore {
 
   private registerRepository() {
     container.registerSingleton(
-      ERefreshTokenKey.REPOSITORY,
+      ERefreshTokenModule.REPOSITORY,
       RefreshTokenRepository,
     );
   }
   private registerService() {
-    container.registerSingleton(ERefreshTokenKey.SERVICE, RefreshTokenService);
+    container.registerSingleton(
+      ERefreshTokenModule.SERVICE,
+      RefreshTokenService,
+    );
   }
 }

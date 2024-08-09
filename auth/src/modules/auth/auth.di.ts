@@ -1,7 +1,7 @@
 import { container } from 'tsyringe';
 
 import { DiCore } from '@core';
-import { EAuthKey } from '@common/enums';
+import { EAuthModule } from '@common/enums';
 import { AuthController } from './auth.controller';
 import {
   IAuthController,
@@ -23,22 +23,22 @@ export class AuthDi extends DiCore {
 
   private registerController() {
     container.registerSingleton<IAuthController>(
-      EAuthKey.CONTROLLER,
+      EAuthModule.CONTROLLER,
       AuthController,
     );
   }
 
   private registerSchema() {
-    container.registerSingleton<IAuthSchema>(EAuthKey.SCHEMA, AuthSchema);
+    container.registerSingleton<IAuthSchema>(EAuthModule.SCHEMA, AuthSchema);
   }
 
   private registerService() {
-    container.registerSingleton<IAuthService>(EAuthKey.SERVICE, AuthService);
+    container.registerSingleton<IAuthService>(EAuthModule.SERVICE, AuthService);
   }
 
   private registerTokenService() {
     container.registerSingleton<IAuthTokenService>(
-      EAuthKey.TOKEN_SERVICE,
+      EAuthModule.TOKEN_SERVICE,
       AuthTokenService,
     );
   }

@@ -7,14 +7,14 @@ export enum EMiddlewareKey {
   USER_SESSION = '',
 }
 
-export enum EAuthKey {
+export enum EAuthModule {
   CONTROLLER = 'AuthController',
   SCHEMA = 'AuthSchema',
   SERVICE = 'AuthService',
   TOKEN_SERVICE = 'AuthTokenService',
 }
 
-export enum EUsersKey {
+export enum EUsersModule {
   CONTROLLER = 'UsersController',
   SERVICE = 'UsersService',
   REPOSITORY = 'UsersRepository',
@@ -22,7 +22,7 @@ export enum EUsersKey {
   VALIDATION_SERVICE = 'ValidationService',
 }
 
-export enum ERefreshTokenKey {
+export enum ERefreshTokenModule {
   SERVICE = 'RefreshTokenService',
   REPOSITORY = 'RefreshTokenRepository',
 }

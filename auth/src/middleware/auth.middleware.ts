@@ -27,12 +27,12 @@ export class AuthMiddleware extends MiddlewareCore {
       }
 
       try {
-        const { userId, role, email } =
+        const { id, role, email } =
           await this.tokenService.verifyJwt<TAccessTokenPayload>(
             token,
             this.jwtConfig.accessToken.secret,
           );
-        req.user = { userId, role, email } as const;
+        req.user = { id, role, email } as const;
 
         return next();
       } catch (error) {

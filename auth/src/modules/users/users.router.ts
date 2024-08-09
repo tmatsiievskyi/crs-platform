@@ -1,4 +1,4 @@
-import { EMiddlewareKey, EUsersKey, EUsersPaths } from '@common/enums';
+import { EMiddlewareKey, EUsersModule, EUsersPaths } from '@common/enums';
 import { RouterCore } from '@core';
 import { inject, injectable } from 'tsyringe';
 import { IUsersController, IUsersSchema } from './_users.type';
@@ -7,11 +7,11 @@ import { IMiddleware } from '@common/types';
 @injectable()
 export class UsersRouter extends RouterCore {
   constructor(
-    @inject(EUsersKey.CONTROLLER)
+    @inject(EUsersModule.CONTROLLER)
     private readonly controller: IUsersController,
     @inject(EMiddlewareKey.VALIDATE)
     private readonly validateMiddleware: IMiddleware,
-    @inject(EUsersKey.SCHEMA)
+    @inject(EUsersModule.SCHEMA)
     private readonly usersSchema: IUsersSchema,
     @inject(EMiddlewareKey.AUTH)
     private readonly authMiddleware: IMiddleware,

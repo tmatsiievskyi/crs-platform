@@ -6,7 +6,7 @@ import {
   IUsersService,
   IUsersValidatorService,
 } from './_users.type';
-import { EUsersKey } from '@common/enums';
+import { EUsersModule } from '@common/enums';
 import { UsersRepository } from './users.repository';
 import { UsersController } from './users.contoller';
 import { UsersService } from './users.service';
@@ -23,27 +23,27 @@ export class UsersDi extends DiCore {
   }
 
   private registerRepository() {
-    container.registerSingleton(EUsersKey.REPOSITORY, UsersRepository);
+    container.registerSingleton(EUsersModule.REPOSITORY, UsersRepository);
   }
 
   private registerController() {
     container.registerSingleton<IUsersController>(
-      EUsersKey.CONTROLLER,
+      EUsersModule.CONTROLLER,
       UsersController,
     );
   }
 
   private registerService() {
-    container.register<IUsersService>(EUsersKey.SERVICE, UsersService);
+    container.register<IUsersService>(EUsersModule.SERVICE, UsersService);
   }
 
   private registerSchema() {
-    container.register<IUsersSchema>(EUsersKey.SCHEMA, UsersSchema);
+    container.register<IUsersSchema>(EUsersModule.SCHEMA, UsersSchema);
   }
 
   private registerUserValidationService() {
     container.register<IUsersValidatorService>(
-      EUsersKey.VALIDATION_SERVICE,
+      EUsersModule.VALIDATION_SERVICE,
       UsersValidationService,
     );
   }

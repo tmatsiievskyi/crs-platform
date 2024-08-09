@@ -13,7 +13,7 @@ import {
 import { TNext, TRequest, TResponse } from '@common/types';
 import { NextFunction } from 'express';
 import { inject, injectable } from 'tsyringe';
-import { EAuthKey, EConfigKey } from '@common/enums';
+import { EAuthModule, EConfigKey } from '@common/enums';
 import { IAppConfig, IJwtConfig } from '@config/_types';
 import { AuthTokenDto } from './auth.token.dto';
 import { COOKIE_ACCESS_TOKEN, COOKIE_REFRESH_TOKEN } from '@common/constants';
@@ -23,7 +23,7 @@ export class AuthController extends ControllerCore implements IAuthController {
   constructor(
     @inject(EConfigKey.APP) protected readonly appConfig: IAppConfig,
     @inject(EConfigKey.JWT) protected readonly jwtConfig: IJwtConfig,
-    @inject(EAuthKey.SERVICE) protected readonly service: IAuthService,
+    @inject(EAuthModule.SERVICE) protected readonly service: IAuthService,
   ) {
     super();
   }
@@ -39,18 +39,9 @@ export class AuthController extends ControllerCore implements IAuthController {
       });
       this.storeTokenInCookie(res, COOKIE_ACCESS_TOKEN, dataInit.accessToken);
       this.storeTokenInCookie(res, COOKIE_REFRESH_TOKEN, dataInit.refreshToken);
-      this.storeDataInCookie(res, {
-        name: 'is_loggedIn',
-        value: String(true),
-        options: {
-          httpOnly: false,
-          // TODO: add expires
-        },
-      });
 
       const data = this.mapDataToDto(dataInit, {
         cls: AuthTokenDto,
-        // options: {}, // TODO: check
       });
 
       return this.sendJSON(res, data);
@@ -72,13 +63,18 @@ export class AuthController extends ControllerCore implements IAuthController {
   };
 
   signOut = async (
-    _req: TAuthSignOutReq,
+    { user }: TAuthSignOutReq,
     res: TResponse,
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const data = { message: 'sign-out' };
-      return this.sendJSON(res, data);
+      const { id } = user;
+
+      await this.service.handleSignOut(id);
+      this.removeDataFromCookie(res, COOKIE_ACCESS_TOKEN);
+      this.removeDataFromCookie(res, COOKIE_REFRESH_TOKEN);
+
+      return this.sendJSON(res, 'ok');
     } catch (error) {
       next(error);
     }
