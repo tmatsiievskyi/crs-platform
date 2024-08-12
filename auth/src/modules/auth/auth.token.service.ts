@@ -6,7 +6,7 @@ import { IRefreshTokenService } from '@modules/refreshToken/_refreshToken.type';
 import { ETokenProvider, ITokenService } from '@providers/token';
 import { inject, injectable } from 'tsyringe';
 import { IAuthTokenService } from './_auth.type';
-import { TUsers } from '@modules/users/_users.type';
+import { TUsers } from '@common/types';
 
 @injectable()
 export class AuthTokenService extends ServiceCore implements IAuthTokenService {

@@ -17,4 +17,20 @@ export class UsersSchema extends SchemaCore implements IUsersSchema {
       },
     };
   }
+
+  changePassword(): TJsonSchemaOptions {
+    return {
+      body: {
+        $id: this.getIdkey('changePassword'),
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        additionalProperties: false,
+        required: ['newPassword', 'oldPassword'],
+        properties: {
+          ...this.getPassword('newPassword'),
+          ...this.getPassword('oldPassword'),
+        },
+      },
+    };
+  }
 }

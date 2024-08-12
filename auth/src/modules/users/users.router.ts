@@ -33,6 +33,17 @@ export class UsersRouter extends RouterCore {
       this.authMiddleware.handler(),
       this.controller.getById,
     );
+    this.router.get(
+      EUsersPaths.USER_CURRENT,
+      this.authMiddleware.handler(),
+      this.controller.getCurrentUser,
+    );
+    this.router.put(
+      EUsersPaths.USER_CURRENT_PASSWORD,
+      this.authMiddleware.handler(),
+      this.validateMiddleware.handler(this.usersSchema.changePassword()),
+      this.controller.changePasswordCurrentUser,
+    );
     this.router.post(EUsersPaths.CREATE, this.controller.create); // TODO: add verification
   }
 }

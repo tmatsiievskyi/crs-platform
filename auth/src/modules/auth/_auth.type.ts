@@ -5,8 +5,8 @@ import {
   TRequest,
   TResponse,
   TTokenPayload,
+  TUsers,
 } from '@common/types';
-import { TUsers } from '@modules/users/_users.type';
 //Structure related
 export interface IAuthController {
   signIn(req: TAuthSignInReq, res: TResponse, next: TNext): Promise<void>;

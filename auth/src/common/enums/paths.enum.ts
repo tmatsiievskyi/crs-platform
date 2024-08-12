@@ -16,4 +16,6 @@ export enum EUsersPaths {
   ALL = '/',
   FIND_BY_ID = '/:id',
   CREATE = '/',
+  USER_CURRENT = '/current/data',
+  USER_CURRENT_PASSWORD = '/current/change-password',
 }
