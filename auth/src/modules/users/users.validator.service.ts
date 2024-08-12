@@ -2,6 +2,7 @@ import { ValidatorCore } from '@core';
 import { IUsersValidatorService, TUserQuery } from './_users.type';
 import { validationMessages } from '@common/messages';
 import { Crypting } from '@common/utils';
+import { TUsers } from '@common/types';
 
 export class UsersValidationService
   extends ValidatorCore
@@ -34,6 +35,20 @@ export class UsersValidationService
   checkEmailIsNotVerified(user?: TUserQuery) {
     if (!user || user.emailVerified) {
       this.throwException('user', validationMessages.emailAlreadyConfirmed);
+    }
+  }
+
+  checkNewPassword(oldPassword: string, newPassword: string) {
+    if (oldPassword === newPassword) {
+      this.throwException('newPassword', validationMessages.samePassword);
+    }
+  }
+
+  async checkOldPassword(user?: Partial<TUsers>, password?: string) {
+    const isValid = await Crypting.comparePasswords(user?.password, password);
+
+    if (!isValid) {
+      this.throwException('oldPassword', validationMessages.oldPasswordWrong);
     }
   }
 }

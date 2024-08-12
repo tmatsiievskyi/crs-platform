@@ -3,10 +3,12 @@ import { inject, injectable } from 'tsyringe';
 import {
   IUsersController,
   IUsersService,
+  TChangeCurrentUserPasswordRequest,
   TCreateUserRequest,
 } from './_users.type';
 import { TRequest, TResponse, TNext } from '@common/types';
 import { EHttpStatusCode, EUsersModule } from '@common/enums';
+import { successMessage } from '@common/messages';
 
 @injectable()
 export class UsersController
@@ -58,5 +60,36 @@ export class UsersController
         },
       );
     } catch (error) {}
+  };
+
+  getCurrentUser = async (
+    req: TRequest,
+    res: TResponse,
+    next: TNext,
+  ): Promise<void> => {
+    try {
+      const { id } = req.user;
+      const user = await this.usersService.findById(id);
+
+      return this.sendJSON(res, user);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  changePasswordCurrentUser = async (
+    req: TChangeCurrentUserPasswordRequest,
+    res: TResponse,
+    next: TNext,
+  ): Promise<void> => {
+    try {
+      const { id } = req.user;
+
+      await this.usersService.updatePassword(id, req.body);
+
+      return this.sendJSON(res, successMessage.changePassword);
+    } catch (error) {
+      next(error);
+    }
   };
 }

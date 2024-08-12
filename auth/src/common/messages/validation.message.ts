@@ -6,4 +6,6 @@ export const validationMessages = {
   emailAlreadyConfirmed: 'This email has already beed confirmed',
   tokenNotProvided:
     'Auth token is not provided. Please add token to your request',
+  samePassword: 'New password should not be the same as old password',
+  oldPasswordWrong: 'Provided old password is not correct',
 };

@@ -6,7 +6,7 @@ import {
   TSignUpBody,
 } from './_auth.type';
 import { inject, injectable } from 'tsyringe';
-import { TTokenPayload } from '@common/types';
+import { TTokenPayload, TUsers } from '@common/types';
 import {
   EAuthModule,
   EHttpStatusCode,
@@ -18,7 +18,6 @@ import {
 import {
   IUsersService,
   IUsersValidatorService,
-  TUsers,
 } from '@modules/users/_users.type';
 import { Crypting, StringUtil } from '@common/utils';
 import { exceptionsMessages } from '@common/messages';
@@ -70,6 +69,7 @@ export class AuthService extends ServiceCore implements IAuthService {
       password: hashedPassword,
       firstName,
       lastName,
+      emailVerified: false,
     });
 
     await this.sendVerifyCodeByEmail(createdUser!);

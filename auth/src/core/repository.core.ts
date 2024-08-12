@@ -1,10 +1,8 @@
 import { db as database } from '@db/database';
 import type { DB } from '@db';
 import { InternalServerExceptions } from '@common/exceptions/http.exception';
-// import { TDeepPartial } from '@common/types';
-import { InsertExpression } from 'kysely/dist/cjs/parser/insert-values-parser';
 import { DeleteResult } from 'kysely';
-// import { UpdateObjectExpression } from 'kysely/dist/cjs/parser/update-set-parser';
+import { TInsertObject, TSelectObject, TUpdateObject } from '@common/types';
 
 export class RepositoryCore {
   protected readonly tabelName: keyof DB;
@@ -25,19 +23,29 @@ export class RepositoryCore {
     return this.db.selectFrom(this.tabelName).selectAll().execute();
   }
 
-  // findById(id: number) {
-  //   try {
-  //     const dbResp = this.tabel
-  //       .where('id', '=', id)
-  //       .selectAll()
-  //       .executeTakeFirst();
-  //     return dbResp;
-  //   } catch (error) {
-  //     throw this.handleError(error);
-  //   }
-  // }
+  findById(id: number, data?: TSelectObject) {
+    try {
+      if (data) {
+        const dbResp = this.db
+          .selectFrom(this.tabelName)
+          .where('id', '=', id)
+          .select(data)
+          .executeTakeFirst();
+        return dbResp;
+      } else {
+        const dbResp = this.db
+          .selectFrom(this.tabelName)
+          .where('id', '=', id)
+          .selectAll()
+          .executeTakeFirst();
+        return dbResp;
+      }
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
 
-  async create(entity: InsertExpression<DB, keyof DB>): Promise<any> {
+  async create(entity: TInsertObject): Promise<any> {
     try {
       return await this.db
         .insertInto(this.tabelName)
@@ -49,21 +57,18 @@ export class RepositoryCore {
     }
   }
 
-  // protected async update(
-  //   value: UpdateObjectExpression<DB, keyof DB>,
-  //   id: number,
-  // ) {
-  //   try {
-  //     return await db
-  //       .updateTable(this.tabelName)
-  //       .set(value)
-  //       .where('id', '=', id)
-  //       .returningAll()
-  //       .executeTakeFirstOrThrow();
-  //   } catch (error) {
-  //     throw this.handleError(error);
-  //   }
-  // }
+  protected async update(id: number, data: TUpdateObject) {
+    try {
+      return await this.db
+        .updateTable(this.tabelName)
+        .set(data)
+        .where('id', '=', id)
+        .returningAll()
+        .executeTakeFirstOrThrow();
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
 
   async delete(id: number): Promise<DeleteResult> {
     try {
